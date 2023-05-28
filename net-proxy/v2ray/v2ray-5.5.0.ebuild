@@ -14,7 +14,7 @@ RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~arm64 ~x86 ~riscv64"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86 ~riscv"
 IUSE=""
 
 BDEPEND="dev-lang/go"
