@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="person">
+    <email>me@puqns67.icu</email>
+    <name>Puqns67</name>
+  </maintainer>
+  <upstream>
+	<changelog>https://dae.v2raya.org/docs/current/changelogs</changelog>
+	<doc>https://dae.v2raya.org/docs/current/intro</doc>
+	<bugs-to>https://github.com/daeuniverse/dae/issues</bugs-to>
+	<remote-id type="github">daeuniverse/dae</remote-id>
+  </upstream>
+</pkgmetadata>
