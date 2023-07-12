@@ -17,8 +17,8 @@ RESTRICT="mirror"
 
 DEPEND=""
 RDEPEND="${DEPEND}
-	dev-libs/v2ray-domain-list-community-bin
-	dev-libs/v2ray-geoip-bin"
+	app-alternatives/v2ray-geoip
+	app-alternatives/v2ray-geosite"
 BDEPEND="sys-devel/clang"
 
 S="${WORKDIR}"
@@ -30,7 +30,9 @@ pkg_pretend() {
 		ewarn "https://github.com/daeuniverse/dae/blob/main/docs/getting-started/README.md#kernel-version"
 	fi
 
-	CONFIG_CHECK="~DEBUG_INFO_BTF ~NET_CLS_ACT ~NET_SCH_INGRESS ~NET_INGRESS ~NET_EGRESS"
+	CONFIG_CHECK="~BPF ~BPF_SYSCALL ~BPF_JIT ~CGROUPS ~KPROBES ~NET_INGRESS
+		~NET_EGRESS ~NET_SCH_INGRESS ~NET_CLS_BPF ~NET_CLS_ACT ~BPF_STREAM_PARSER
+		~DEBUG_INFO ~DEBUG_INFO_BTF ~KPROBE_EVENTS ~BPF_EVENTS"
 	check_extra_config
 }
 
