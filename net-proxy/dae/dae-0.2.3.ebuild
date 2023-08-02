@@ -6,7 +6,7 @@ EAPI=8
 inherit linux-info go-module systemd
 
 DESCRIPTION="A lightweight and high-performance transparent proxy solution based on eBPF"
-HOMEPAGE="https://dae.v2raya.org/"
+HOMEPAGE="https://github.com/daeuniverse/dae"
 SRC_URI="https://github.com/daeuniverse/dae/releases/download/v${PV//_/}/dae-full-src.zip -> ${P}.zip"
 
 LICENSE="AGPL-3"
@@ -27,17 +27,17 @@ pkg_pretend() {
 	if kernel_is lt 5 8 0; then
 		ewarn "Your kernel version is lower than 5.8.0, some features will not work correctly."
 		ewarn "Please read this article for more information:"
-		ewarn "https://github.com/daeuniverse/dae/blob/main/docs/getting-started/README.md#kernel-version"
+		ewarn "https://github.com/daeuniverse/dae/blob/main/docs/en/README.md#kernel-version"
 	fi
 
-	CONFIG_CHECK="~BPF ~BPF_SYSCALL ~BPF_JIT ~CGROUPS ~KPROBES ~NET_INGRESS
-		~NET_EGRESS ~NET_SCH_INGRESS ~NET_CLS_BPF ~NET_CLS_ACT ~BPF_STREAM_PARSER
-		~DEBUG_INFO ~DEBUG_INFO_BTF ~KPROBE_EVENTS ~BPF_EVENTS"
+	CONFIG_CHECK="~BPF ~BPF_EVENTS ~BPF_JIT ~BPF_STREAM_PARSER ~BPF_SYSCALL
+		~CGROUPS ~DEBUG_INFO ~DEBUG_INFO_BTF ~KPROBES ~KPROBE_EVENTS
+		~NET_CLS_ACT ~NET_CLS_BPF ~NET_EGRESS ~NET_INGRESS ~NET_SCH_INGRESS"
 	check_extra_config
 }
 
 src_compile() {
-	emake VERSION="${PV}" GOFLAGS="-buildvcs=false" CC=clang CFLAGS="$CFLAGS -fno-stack-protector"
+	CFLAGS="-fno-stack-protector" GOFLAGS="-trimpath" VERSION="${PV}" emake
 }
 
 src_install() {
