@@ -6,8 +6,8 @@
     <name>Puqns67</name>
   </maintainer>
   <upstream>
-	<changelog>https://dae.v2raya.org/docs/current/changelogs</changelog>
-	<doc>https://dae.v2raya.org/docs/current/intro</doc>
+	<changelog>https://github.com/daeuniverse/dae/blob/main/CHANGELOGS.md</changelog>
+	<doc>https://github.com/daeuniverse/dae/blob/main/docs/en/README.md</doc>
 	<bugs-to>https://github.com/daeuniverse/dae/issues</bugs-to>
 	<remote-id type="github">daeuniverse/dae</remote-id>
   </upstream>
