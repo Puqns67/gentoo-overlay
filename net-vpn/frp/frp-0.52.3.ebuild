@@ -45,7 +45,7 @@ src_install() {
 		systemd_dounit "${FILESDIR}/frpc.service"
 		systemd_newunit "${FILESDIR}/frpc_at.service" frpc@.service
 
-		for x in conf/frpc*.ini; do mv "${x}"{,.example}; done
+		for x in conf/frpc*.toml; do mv "${x}"{,.example}; done
 	fi
 
 	if use server; then
@@ -54,12 +54,12 @@ src_install() {
 		systemd_dounit "${FILESDIR}/frps.service"
 		systemd_newunit "${FILESDIR}/frps_at.service" frps@.service
 
-		for x in conf/frps*.ini; do mv "${x}"{,.example}; done
+		for x in conf/frps*.toml; do mv "${x}"{,.example}; done
 	fi
-
-	dofishcomp completions/*.fish
-	dozshcomp completions/_*
 
 	insinto /etc/frp
 	doins conf/*.example
+
+	dofishcomp completions/*.fish
+	dozshcomp completions/_*
 }
