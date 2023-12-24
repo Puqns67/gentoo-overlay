@@ -1,6 +1,6 @@
-From adf0886cea3b03c1acff3d78054554ad1df46fa0 Mon Sep 17 00:00:00 2001
+From b19d31496a6031050b91dbd02a66b2ec05ac729d Mon Sep 17 00:00:00 2001
 From: Puqns67 <me@puqns67.icu>
-Date: Sun, 3 Dec 2023 11:33:17 +0800
+Date: Sun, 24 Dec 2023 22:21:38 +0800
 Subject: [PATCH 2/2] build: remove service management support for this build
 
 ---
@@ -10,36 +10,39 @@ Subject: [PATCH 2/2] build: remove service management support for this build
  3 files changed, 1 insertion(+), 230 deletions(-)
 
 diff --git a/go.mod b/go.mod
-index a70d477..67459b2 100644
+index 08b144c..61ea627 100644
 --- a/go.mod
 +++ b/go.mod
-@@ -3,9 +3,6 @@ module github.com/jeessy2/ddns-go/v5
+@@ -3,10 +3,7 @@ module github.com/jeessy2/ddns-go/v5
  go 1.20
  
  require (
 -	github.com/kardianos/service v1.2.2
  	github.com/wagslane/go-password-validator v0.3.0
+ 	golang.org/x/net v0.19.0
  	gopkg.in/yaml.v3 v3.0.1
  )
 -
--require golang.org/x/sys v0.13.0 // indirect
+-require golang.org/x/sys v0.15.0 // indirect
 diff --git a/go.sum b/go.sum
-index 36b9ca3..cecce49 100644
+index ff968b0..802389b 100644
 --- a/go.sum
 +++ b/go.sum
-@@ -1,10 +1,5 @@
+@@ -1,12 +1,7 @@
 -github.com/kardianos/service v1.2.2 h1:ZvePhAHfvo0A7Mftk/tEzqEZ7Q4lgnR8sGz4xu1YX60=
 -github.com/kardianos/service v1.2.2/go.mod h1:CIMRFEJVL+0DS1a3Nx06NaMn4Dz63Ng6O7dl0qH0zVM=
  github.com/wagslane/go-password-validator v0.3.0 h1:vfxOPzGHkz5S146HDpavl0cw1DSVP061Ry2PX0/ON6I=
  github.com/wagslane/go-password-validator v0.3.0/go.mod h1:TI1XJ6T5fRdRnHqHt14pvy1tNVnrwe7m3/f1f2fDphQ=
+ golang.org/x/net v0.19.0 h1:zTwKpTd2XuCqf8huc7Fo2iSy+4RHPd10s4KzeTnVr1c=
+ golang.org/x/net v0.19.0/go.mod h1:CfAk/cbD4CthTvqiEl8NpboMuiuOYsAr/7NOjZJtv1U=
 -golang.org/x/sys v0.0.0-20201015000850-e3ed0017c211/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
--golang.org/x/sys v0.13.0 h1:Af8nKPmuFypiUBjVoU9V20FiaFXOcuZI21p0ycVYYGE=
--golang.org/x/sys v0.13.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+-golang.org/x/sys v0.15.0 h1:h48lPFYpsTvQJZF4EKyI4aLHaev3CxivZmv7yZig9pc=
+-golang.org/x/sys v0.15.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
  gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
  gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
  gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
 diff --git a/main.go b/main.go
-index 4896399..78c848f 100644
+index 5b164ba..eae04be 100644
 --- a/main.go
 +++ b/main.go
 @@ -8,7 +8,6 @@ import (
@@ -49,8 +52,8 @@ index 4896399..78c848f 100644
 -	"os/exec"
  	"path/filepath"
  	"strconv"
- 	"time"
-@@ -17,7 +16,6 @@ import (
+ 	"strings"
+@@ -18,7 +17,6 @@ import (
  	"github.com/jeessy2/ddns-go/v5/dns"
  	"github.com/jeessy2/ddns-go/v5/util"
  	"github.com/jeessy2/ddns-go/v5/web"
@@ -58,7 +61,7 @@ index 4896399..78c848f 100644
  )
  
  // ddns-go 版本
-@@ -33,9 +31,6 @@ var every = flag.Int("f", 300, "同步间隔时间(秒)")
+@@ -34,9 +32,6 @@ var every = flag.Int("f", 300, "同步间隔时间(秒)")
  // 缓存次数
  var ipCacheTimes = flag.Int("cacheTimes", 5, "间隔N次与服务商比对")
  
@@ -68,8 +71,8 @@ index 4896399..78c848f 100644
  // 配置文件路径
  var configFilePath = flag.String("c", util.GetConfigFilePathDefault(), "自定义配置文件路径")
  
-@@ -78,34 +73,7 @@ func main() {
- 		util.NewDialerResolver(*customDNSServer + ":53")
+@@ -83,34 +78,7 @@ func main() {
+ 		}
  	}
  	os.Setenv(util.IPCacheTimesENV, strconv.Itoa(*ipCacheTimes))
 -	switch *serviceType {
@@ -104,7 +107,7 @@ index 4896399..78c848f 100644
  }
  
  func run() {
-@@ -163,131 +131,6 @@ func runWebServer() error {
+@@ -168,131 +136,6 @@ func runWebServer() error {
  	return http.Serve(l, nil)
  }
  
@@ -236,7 +239,7 @@ index 4896399..78c848f 100644
  // 打开浏览器
  func autoOpenExplorer() {
  	_, err := config.GetConfigCached()
-@@ -310,67 +153,3 @@ func autoOpenExplorer() {
+@@ -315,67 +158,3 @@ func autoOpenExplorer() {
  		}
  	}
  }

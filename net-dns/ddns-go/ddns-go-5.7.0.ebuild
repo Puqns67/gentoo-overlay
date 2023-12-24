@@ -22,7 +22,7 @@ BDEPEND=">=dev-lang/go-1.20"
 
 PATCHES=(
 	"${FILESDIR}/ddns-go-5.6.6-remove-update-support.patch"
-	"${FILESDIR}/ddns-go-5.6.6-remove-service-management-support.patch"
+	"${FILESDIR}/ddns-go-5.7.0-remove-service-management-support.patch"
 )
 
 src_compile() {
