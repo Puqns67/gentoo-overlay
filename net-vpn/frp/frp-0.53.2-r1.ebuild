@@ -21,45 +21,48 @@ RDEPEND=""
 BDEPEND="dev-lang/go"
 
 src_compile() {
-	mkdir -pv completions || die
+	mkdir -pv comp || die
 
 	if use client; then
 		ego build -trimpath -ldflags "-w" -o frpc ./cmd/frpc
-		./frpc completion bash > completions/frpc || die
-		./frpc completion fish > completions/frpc.fish || die
-		./frpc completion zsh > completions/_frpc || die
+		./frpc completion bash > comp/frpc || die
+		./frpc completion fish > comp/frpc.fish || die
+		./frpc completion zsh > comp/_frpc || die
 	fi
 
 	if use server; then
 		ego build -trimpath -ldflags "-w" -o frps ./cmd/frps
-		./frps completion bash > completions/frps || die
-		./frps completion fish > completions/frps.fish || die
-		./frps completion zsh > completions/_frps || die
+		./frps completion bash > comp/frps || die
+		./frps completion fish > comp/frps.fish || die
+		./frps completion zsh > comp/_frps || die
 	fi
 }
 
 src_install() {
-	if use client; then
-		dobin frpc
-		dobashcomp completions/frpc
-		systemd_dounit "${FILESDIR}/frpc.service"
-		systemd_newunit "${FILESDIR}/frpc_at.service" frpc@.service
+	_install() {
+		# Install binary file
+		dobin "${1}"
 
-		for x in conf/frpc*.toml; do mv "${x}"{,.example}; done
+		# Install completion files
+		dobashcomp "${S}/comp/${1}"
+		dofishcomp "${S}/comp/${1}.fish"
+		dozshcomp "${S}/comp/_${1}"
+
+		# Install systemd services
+		systemd_dounit "${FILESDIR}/${1}.service"
+		systemd_newunit "${FILESDIR}/${1}_at.service" "${1}@.service"
+
+		# Install config files
+		insinto "/etc/${PN}"
+		newins "${S}/conf/${1}.toml" "${1}.toml.example"
+		newins "${S}/conf/${1}_full_example.toml" "${1}_full.toml.example"
+	}
+
+	if use client; then
+		_install frpc
 	fi
 
 	if use server; then
-		dobin frps
-		dobashcomp completions/frps
-		systemd_dounit "${FILESDIR}/frps.service"
-		systemd_newunit "${FILESDIR}/frps_at.service" frps@.service
-
-		for x in conf/frps*.toml; do mv "${x}"{,.example}; done
+		_install frps
 	fi
-
-	insinto /etc/frp
-	doins conf/*.example
-
-	dofishcomp completions/*.fish
-	dozshcomp completions/_*
 }
