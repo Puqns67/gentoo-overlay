@@ -10,36 +10,32 @@ HOMEPAGE="https://github.com/jeessy2/ddns-go"
 SRC_URI="https://github.com/jeessy2/ddns-go/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
 	https://github.com/Puqns67/gentoo-deps/releases/download/${P}/${P}-deps.tar.xz"
 
-LICENSE="MIT"
+LICENSE="MIT BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~riscv"
 
 RESTRICT="mirror"
 
-DEPEND=""
-RDEPEND="${DEPEND}"
-BDEPEND=">=dev-lang/go-1.20"
-
 PATCHES=(
-	"${FILESDIR}/ddns-go-5.6.6-remove-update-support.patch"
-	"${FILESDIR}/ddns-go-5.7.0-remove-service-management-support.patch"
+	"${FILESDIR}/${P}-remove-update-support.patch"
+	"${FILESDIR}/${P}-remove-service-management-support.patch"
 )
 
 src_compile() {
 	ego build \
 		-trimpath \
-		-ldflags="-s -w \
+		-ldflags="-s -w -linkmode external \
 			-X 'main.version=${PV}' \
 			-X 'main.buildTime=$(date -u +"%Y-%m-%dT%H:%M:%SZ")'" \
-		-o ddns-go \
+		-o "${PN}" \
 		.
 }
 
 src_install() {
-	dobin ddns-go
-	systemd_dounit "${FILESDIR}/ddns-go.service"
-	systemd_newunit "${FILESDIR}/ddns-go_at.service" ddns-go@.service
-	systemd_dounit "${FILESDIR}/ddns-go-web.service"
-	systemd_newunit "${FILESDIR}/ddns-go-web_at.service" ddns-go-web@.service
-	keepdir /etc/ddns-go
+	dobin "${PN}"
+	systemd_dounit "${FILESDIR}/${PN}.service"
+	systemd_newunit "${FILESDIR}/${PN}_at.service" "${PN}@.service"
+	systemd_dounit "${FILESDIR}/${PN}-web.service"
+	systemd_newunit "${FILESDIR}/${PN}-web_at.service" "${PN}-web@.service"
+	keepdir /etc/${PN}
 }
