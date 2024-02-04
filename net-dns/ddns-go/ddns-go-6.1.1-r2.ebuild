@@ -36,6 +36,5 @@ src_install() {
 	systemd_dounit "${FILESDIR}/${PN}.service"
 	systemd_newunit "${FILESDIR}/${PN}_at.service" "${PN}@.service"
 	systemd_dounit "${FILESDIR}/${PN}-web.service"
-	systemd_newunit "${FILESDIR}/${PN}-web_at.service" "${PN}-web@.service"
 	keepdir "/etc/${PN}"
 }

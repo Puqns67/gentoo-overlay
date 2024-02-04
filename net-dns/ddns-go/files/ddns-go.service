@@ -2,7 +2,7 @@
 Description=DDNS-GO with default config
 Requires=network.target
 After=network-online.target
-Conflicts=ddns-go@config.service ddns-go-web.service ddns-go-web@config.service
+Conflicts=ddns-go@config.service ddns-go-web.service
 
 [Service]
 Type=simple
