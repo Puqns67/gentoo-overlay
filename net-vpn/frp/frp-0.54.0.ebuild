@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -16,22 +16,18 @@ KEYWORDS="~amd64 ~loong ~riscv"
 IUSE="+client server"
 REQUIRED_USE="|| ( client server )"
 
-DEPEND="${RDEPEND}"
-RDEPEND=""
-BDEPEND="dev-lang/go"
-
 src_compile() {
 	mkdir -pv comp || die
 
 	if use client; then
-		ego build -trimpath -ldflags "-w" -o frpc ./cmd/frpc
+		ego build -trimpath -ldflags "-s -w" -tags frpc -o frpc ./cmd/frpc
 		./frpc completion bash > comp/frpc || die
 		./frpc completion fish > comp/frpc.fish || die
 		./frpc completion zsh > comp/_frpc || die
 	fi
 
 	if use server; then
-		ego build -trimpath -ldflags "-w" -o frps ./cmd/frps
+		ego build -trimpath -ldflags "-s -w" -tags frps -o frps ./cmd/frps
 		./frps completion bash > comp/frps || die
 		./frps completion fish > comp/frps.fish || die
 		./frps completion zsh > comp/_frps || die
