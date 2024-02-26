@@ -9,7 +9,7 @@ SRC_URI="https://github.com/VueTorrent/VueTorrent/releases/download/v${PV}/vueto
 
 LICENSE="GPL-3+"
 SLOT="0"
-KEYWORDS="~riscv"
+KEYWORDS="~amd64 ~arm64 ~riscv"
 
 RESTRICT="mirror"
 
