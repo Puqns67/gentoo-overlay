@@ -3,9 +3,13 @@
 
 EAPI=8
 
+_COMMIT="00eac97eb59e8ce167e75455db5f6d54e67914d3"
+
 DESCRIPTION="The sleekest looking WEBUI for qBittorrent made with Vuejs!"
 HOMEPAGE="https://github.com/VueTorrent/VueTorrent"
-SRC_URI="https://github.com/VueTorrent/VueTorrent/releases/download/v${PV}/vuetorrent.zip -> ${P}.zip"
+SRC_URI="https://github.com/VueTorrent/VueTorrent/archive/${_COMMIT}.tar.gz -> ${P}.tar.gz"
+
+S="${WORKDIR}/VueTorrent-${_COMMIT}"
 
 LICENSE="GPL-3+"
 SLOT="0"
@@ -13,11 +17,7 @@ KEYWORDS="~amd64 ~arm64 ~riscv"
 
 RESTRICT="mirror"
 
-BDEPEND="app-arch/unzip"
-
-S="${WORKDIR}"
-
 src_install() {
-	dodir /usr/share
-	cp -rv "${S}/${PN%-bin}" "${D}/usr/share" || die
+	insinto "/usr/share/${PN%-bin}"
+	doins -r *
 }
