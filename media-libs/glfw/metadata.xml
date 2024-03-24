@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="project">
+		<email>me@puqns67.icu</email>
+		<name>Puqns67</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">glfw/glfw</remote-id>
+		<changelog>https://www.glfw.org/changelog.html</changelog>
+	</upstream>
+	<use>
+		<flag name="wayland">Enable wayland support</flag>
+	</use>
+</pkgmetadata>
