@@ -28,6 +28,7 @@ src_unpack() {
 src_install() {
 	insinto "/usr/lib/${_PN}"
 	doins -r usr/bin/*
+	chmod 755 "${D}/usr/lib/${_PN}/osu!"
 
 	newbin "${FILESDIR}/${_PN}.bash" osu-lazer
 
