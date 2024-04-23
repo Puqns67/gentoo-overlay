@@ -15,7 +15,7 @@ S="${WORKDIR}/squashfs-root"
 
 LICENSE="MIT CC-BY-NC-4.0"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="-* ~amd64"
 
 RESTRICT="mirror"
 
@@ -30,9 +30,9 @@ src_install() {
 	doins -r usr/bin/*
 	chmod 755 "${D}/usr/lib/${_PN}/osu!"
 
-	newbin "${FILESDIR}/${_PN}.bash" osu-lazer
+	newbin "${FILESDIR}/${_PN}.bash" "${_PN}"
 
-	newicon 'osu!.png' osu-lazer.png
+	newicon 'osu!.png' "${_PN}.png"
 	domenu "${FILESDIR}/${_PN}.desktop"
 
 	insinto /usr/share/mime/packages

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=osu!
+Icon=osu
+Comment=Rhythm is just a *click* away!
+MimeType=application/x-osu-beatmap;application/x-osu-skin;x-scheme-handler/osu;
+Exec=/usr/bin/osu %U
+Categories=Game;
+Terminal=false
+StartupWMClass=osu!
+StartupNotify=true
