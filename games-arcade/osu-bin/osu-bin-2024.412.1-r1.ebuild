@@ -19,6 +19,8 @@ KEYWORDS="-* ~amd64"
 
 RESTRICT="mirror"
 
+RDEPEND="dev-util/lttng-ust:0/2.12"
+
 src_unpack() {
 	cp "${DISTDIR}/${_PN}-${PV}.AppImage" "${WORKDIR}/app"
 	chmod +x app
