@@ -49,6 +49,6 @@ src_compile() {
 src_install() {
 	dobin sing-box
 	insinto /etc/sing-box
-	doins release/config/config.json config.json.example
+	newins release/config/config.json config.json.example
 	systemd_dounit release/config/sing-box{,@}.service
 }
