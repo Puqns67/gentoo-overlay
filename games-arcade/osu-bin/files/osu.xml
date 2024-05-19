@@ -2,7 +2,7 @@
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
     <mime-type type="application/x-osu-beatmap">
         <sub-class-of type="text/plain" />
-        <comment>osu! Beatmap archive</comment>
+        <comment>osu! Beatmap</comment>
         <comment xml:lang="zh">osu! 难度</comment>
         <icon name="osu" />
         <glob pattern="*.osu" />
