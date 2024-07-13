@@ -33,4 +33,9 @@ RDEPEND="
 	dev-python/wcwidth[${PYTHON_USEDEP}]
 "
 
+PATCHES=(
+	"${FILESDIR}/${PN}-2.13.0-skip-environment-check.patch"
+	"${FILESDIR}/${PN}-2.13.0-fix-qa.patch"
+)
+
 distutils_enable_tests unittest
