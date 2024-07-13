@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>me@puqns67.icu</email>
+		<name>Puqns67</name>
+	</maintainer>
+	<upstream>
+		<doc>https://docs.mcdreforged.com/</doc>
+		<bugs-to>https://github.com/MCDReforged/MCDReforged/issues</bugs-to>
+		<remote-id type="github">MCDReforged/MCDReforged</remote-id>
+		<remote-id type="pypi">mcdreforged</remote-id>
+	</upstream>
+</pkgmetadata>
