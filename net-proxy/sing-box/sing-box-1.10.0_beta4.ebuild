@@ -12,8 +12,11 @@ _PV="${_PV/rc/rc.}"
 
 DESCRIPTION="The universal proxy platform."
 HOMEPAGE="https://sing-box.sagernet.org/ https://github.com/SagerNet/sing-box"
-SRC_URI="https://github.com/SagerNet/sing-box/archive/refs/tags/v${_PV}.tar.gz -> ${P}.tar.gz
-	https://github.com/Puqns67/gentoo-deps/releases/download/${P}/${P}-vendor.tar.xz"
+SRC_URI="
+	https://github.com/SagerNet/sing-box/archive/refs/tags/v${_PV}.tar.gz -> ${P}.tar.gz
+	tor? ( https://github.com/Puqns67/gentoo-deps/releases/download/${P}/${P}-deps.tar.xz )
+	!tor? ( https://github.com/Puqns67/gentoo-deps/releases/download/${P}/${P}-vendor.tar.xz )
+"
 
 S="${WORKDIR}/${PN}-${_PV}"
 
@@ -24,6 +27,11 @@ KEYWORDS="~amd64 ~riscv"
 IUSE="+quic grpc +dhcp +wireguard +ech +utls +reality +acme +clash-api v2ray-api +gvisor tor"
 
 RESTRICT="mirror"
+
+BDEPEND="
+	ech? ( >=dev-lang/go-1.21 )
+	!ech? ( >=dev-lang/go-1.20 )
+"
 
 src_compile() {
 	TAGS=""
@@ -42,7 +50,7 @@ src_compile() {
 	TAGS="${TAGS%,}"
 
 	ego build -o sing-box -trimpath -tags "${TAGS}" \
-		-ldflags "-s -w -X 'github.com/sagernet/sing-box/constant.Version=${PV}' -buildid=" \
+		-ldflags "-s -w -X 'github.com/sagernet/sing-box/constant.Version=${PV}'" \
 		./cmd/sing-box
 }
 
