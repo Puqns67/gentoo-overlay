@@ -44,12 +44,12 @@ src_install() {
 
 	chmod 755 "${D}/usr/lib/${_PN}/osu!"
 
-	newicon '../osu!.png' "${_PN}.png"
+	newicon "${WORKDIR}/squashfs-root/osu!.png" "${_PN}.png"
 	domenu "${FILESDIR}/${_PN}.desktop"
 
-	insinto '/usr/share/mime/packages'
+	insinto /usr/share/mime/packages
 	doins "${FILESDIR}/${_PN}.xml"
 
 	insinto "/usr/share/licenses/${_PN}"
-	doins "${DISTDIR}/osu-resources-${_RV}-LICENCE.md" "osu-resources-LICENCE.md"
+	newins "${DISTDIR}/osu-resources-${_RV}-LICENCE.md" osu-resources-LICENCE.md
 }
