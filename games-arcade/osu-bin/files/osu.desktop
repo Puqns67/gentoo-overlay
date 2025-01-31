@@ -2,10 +2,11 @@
 Type=Application
 Name=osu!
 Icon=osu
-Comment=Rhythm is just a *click* away!
-MimeType=application/x-osu-beatmap;application/x-osu-beatmap-archive;application/x-osu-skin-archive;application/x-osu-storyboard;application/x-osu-replay;x-scheme-handler/osu;
 Exec=/usr/bin/osu %U
+Comment=A free-to-win rhythm game. Rhythm is just a *click* away!
 Categories=Game;
-Terminal=false
+MimeType=application/x-osu-beatmap;application/x-osu-beatmap-archive;application/x-osu-skin-archive;application/x-osu-storyboard;application/x-osu-replay;x-scheme-handler/osu;
+SingleMainWindow=true
 StartupWMClass=osu!
 StartupNotify=true
+Terminal=false
