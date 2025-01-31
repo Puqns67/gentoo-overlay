@@ -81,17 +81,17 @@ src_install() {
 
 	# Install icons
 	pushd icons
-		for icon in osu-*; do
+		for icon in *; do
 			type="${icon%-*}"
 			size="${icon##*-}"
 
 			case "${type}" in
-				"osu")
-					newicon --context "apps" --size "${size}" "${icon}" "${_PN}.png"
-					;;
-				"beatmap")
-					newicon --context "mimetypes" --size "${size}" "${icon}" "${_PN}-beatmap.png"
-					;;
+			"osu")
+				newicon --context "apps" --size "${size}" "${icon}" "${_PN}.png"
+				;;
+			"beatmap")
+				newicon --context "mimetypes" --size "${size}" "${icon}" "${_PN}-beatmap.png"
+				;;
 			esac
 		done
 	popd
