@@ -76,7 +76,7 @@ src_install() {
 	domenu "${FILESDIR}/${_PN}.desktop"
 
 	# Install mime file
-	insinto /usr/share/mime/application
+	insinto /usr/share/mime/packages
 	doins "${FILESDIR}/${_PN}.xml"
 
 	# Install icons
