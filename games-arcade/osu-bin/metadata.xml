@@ -5,6 +5,9 @@
 		<email>me@puqns67.icu</email>
 		<name>Puqns67</name>
 	</maintainer>
+	<use>
+		<flag name="sdl2">Use SDL2 to run the game, otherwise use SDL3.</flag>
+	</use>
 	<upstream>
 		<remote-id type="github">ppy/osu</remote-id>
 	</upstream>

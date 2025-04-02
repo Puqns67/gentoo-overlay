@@ -6,7 +6,7 @@ EAPI=8
 inherit desktop xdg
 
 _PN="${PN%-bin}"
-_RV="2024.1224.0"
+_RV="2025.321.0"
 
 DESCRIPTION="A free-to-win rhythm game. Rhythm is just a click away!"
 HOMEPAGE="https://osu.ppy.sh/ https://github.com/ppy/osu"
@@ -21,14 +21,17 @@ LICENSE="MIT CC-BY-NC-4.0"
 SLOT="0"
 KEYWORDS="-* ~amd64"
 
+IUSE="sdl2"
+
 RESTRICT="mirror"
 
-DEPEND="
+DEPEND="x11-themes/hicolor-icon-theme"
+RDEPEND="
+	${DEPEND}
 	dev-util/lttng-ust:0/2.12
-	media-libs/libsdl3
-	x11-themes/hicolor-icon-theme
+	sdl2? ( media-libs/libsdl2 )
+	!sdl2? ( media-libs/libsdl3 )
 "
-RDEPEND="${DEPEND}"
 BDEPEND="media-gfx/imagemagick"
 
 src_unpack() {
@@ -70,6 +73,11 @@ src_install() {
 	fperms +x "/usr/lib/${_PN}/osu!"
 
 	# Install wrapper script
+	if use sdl2; then
+		sed -i "s/%SDL3_DEFAULT%/false/" "${FILESDIR}/${_PN}.bash"
+	else
+		sed -i "s/%SDL3_DEFAULT%/true/" "${FILESDIR}/${_PN}.bash"
+	fi
 	newbin "${FILESDIR}/${_PN}.bash" "${_PN}"
 
 	# Install desktop file
@@ -98,5 +106,6 @@ src_install() {
 
 	# Install license
 	insinto "/usr/share/licenses/${_PN}"
-	newins "${DISTDIR}/osu-resources-${_RV}-LICENCE.md" osu-resources.md
+	newins "${DISTDIR}/osu-${PV}-LICENCE.md" "${_PN}-LICENCE"
+	newins "${DISTDIR}/osu-resources-${_RV}-LICENCE.md" osu-resources-LICENCE.md
 }

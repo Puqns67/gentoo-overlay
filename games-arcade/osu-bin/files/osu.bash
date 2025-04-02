@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-export OSU_SDL3=${OSU_SDL3:=true}
+export OSU_SDL3=${OSU_SDL3:=%SDL3_DEFAULT%}
 export OSU_EXTERNAL_UPDATE_PROVIDER=true
 
 if command -v gamemoderun &> /dev/null; then
