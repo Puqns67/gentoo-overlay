@@ -15,7 +15,7 @@ SRC_URI="
 	https://github.com/ppy/osu-resources/raw/${_RV}/LICENCE.md -> osu-resources-${_RV}-LICENCE.md
 "
 
-S="${WORKDIR}/squashfs-root"
+S="${WORKDIR}"
 
 LICENSE="MIT CC-BY-NC-4.0"
 SLOT="0"
@@ -43,8 +43,6 @@ src_unpack() {
 src_prepare() {
 	default
 
-	mkdir -v icons
-
 	pushd usr/bin
 		# Use system sdl
 		rm -fv libSDL{2,3}.so
@@ -53,32 +51,30 @@ src_prepare() {
 		rm -fv *.pdb
 	popd
 
+	mkdir -v icons
 	pushd icons
-		magick -verbose "${S}/usr/bin/lazer.ico" osu.png
-		magick -verbose "${S}/usr/bin/beatmap.ico" beatmap.png
+		magick -verbose "${S}/squashfs-root/usr/bin/lazer.ico" osu.png
+		magick -verbose "${S}/squashfs-root/usr/bin/beatmap.ico" beatmap.png
 
 		eval $(magick identify -format "mv -v %f osu-%G;" osu*.png)
 		eval $(magick identify -format "mv -v %f beatmap-%G;" beatmap*.png)
 
-		for icon in "${S}"/usr/share/icons/hicolor/*/apps/osu.png; do
-			cp -v "${icon}" "osu-$(echo "${icon}" | sed 's/^.*\/\([0-9]\{2,4\}x[0-9]\{2,4\}\)\/.*$/\1/g')"
+		for icon in ${S}/squashfs-root/usr/share/icons/hicolor/*/apps/osu.png; do
+			cp -v "${icon}" "osu-$(echo "${icon}" | sed 's/\([0-9]\{2,4\}x[0-9]\{2,4\}\)/\1/g')"
 		done
 	popd
+
+	sed "s/%SDL3_DEFAULT%/$(usex sdl2 false true)/" "${FILESDIR}/${_PN}.bash" > "${_PN}"
 }
 
 src_install() {
 	# Install game files
 	insinto "/usr/lib/${_PN}"
-	doins -r usr/bin/*
+	doins -r squashfs-root/usr/bin/*
 	fperms +x "/usr/lib/${_PN}/osu!"
 
 	# Install wrapper script
-	if use sdl2; then
-		sed -i "s/%SDL3_DEFAULT%/false/" "${FILESDIR}/${_PN}.bash"
-	else
-		sed -i "s/%SDL3_DEFAULT%/true/" "${FILESDIR}/${_PN}.bash"
-	fi
-	newbin "${FILESDIR}/${_PN}.bash" "${_PN}"
+	dobin "${_PN}"
 
 	# Install desktop file
 	domenu "${FILESDIR}/${_PN}.desktop"
@@ -107,5 +103,5 @@ src_install() {
 	# Install license
 	insinto "/usr/share/licenses/${_PN}"
 	newins "${DISTDIR}/osu-${PV}-LICENCE.md" "${_PN}-LICENCE"
-	newins "${DISTDIR}/osu-resources-${_RV}-LICENCE.md" osu-resources-LICENCE.md
+	newins "${DISTDIR}/osu-resources-${_RV}-LICENCE.md" "${_PN}-resources-LICENCE.md"
 }
