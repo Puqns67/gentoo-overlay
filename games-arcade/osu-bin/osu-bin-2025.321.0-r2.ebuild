@@ -1,4 +1,4 @@
-# Copyright 2024 Gentoo Authors
+# Copyright 2024-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -12,7 +12,8 @@ DESCRIPTION="A free-to-win rhythm game. Rhythm is just a click away!"
 HOMEPAGE="https://osu.ppy.sh/ https://github.com/ppy/osu"
 SRC_URI="
 	https://github.com/ppy/osu/releases/download/${PV}/osu.AppImage -> ${_PN}-${PV}.AppImage
-	https://github.com/ppy/osu-resources/raw/${_RV}/LICENCE.md -> osu-resources-${_RV}-LICENCE.md
+	https://github.com/ppy/osu/raw/${PV}/LICENCE -> ${_PN}-${PV}-LICENCE
+	https://github.com/ppy/osu-resources/raw/${_RV}/LICENCE.md -> ${_PN}-resources-${_RV}-LICENCE.md
 "
 
 S="${WORKDIR}"
@@ -59,8 +60,8 @@ src_prepare() {
 		eval $(magick identify -format "mv -v %f osu-%G;" osu*.png)
 		eval $(magick identify -format "mv -v %f beatmap-%G;" beatmap*.png)
 
-		for icon in ${S}/squashfs-root/usr/share/icons/hicolor/*/apps/osu.png; do
-			cp -v "${icon}" "osu-$(echo "${icon}" | sed 's/\([0-9]\{2,4\}x[0-9]\{2,4\}\)/\1/g')"
+		for icon in "${S}"/squashfs-root/usr/share/icons/hicolor/*/apps/osu.png; do
+			cp -v "${icon}" "osu-$(echo "${icon}" | sed 's/^.*\/\([0-9]\{2,4\}x[0-9]\{2,4\}\)\/.*$/\1/g')"
 		done
 	popd
 
@@ -102,6 +103,6 @@ src_install() {
 
 	# Install license
 	insinto "/usr/share/licenses/${_PN}"
-	newins "${DISTDIR}/osu-${PV}-LICENCE.md" "${_PN}-LICENCE"
-	newins "${DISTDIR}/osu-resources-${_RV}-LICENCE.md" "${_PN}-resources-LICENCE.md"
+	newins "${DISTDIR}/${_PN}-${PV}-LICENCE" "${_PN}-LICENCE"
+	newins "${DISTDIR}/${_PN}-resources-${_RV}-LICENCE.md" "${_PN}-resources-LICENCE.md"
 }
