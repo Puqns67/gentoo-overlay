@@ -22,7 +22,7 @@ LICENSE="MIT CC-BY-NC-4.0"
 SLOT="0"
 KEYWORDS="-* ~amd64"
 
-IUSE="sdl2"
+IUSE="sdl2 +system-sdl"
 
 RESTRICT="mirror"
 
@@ -30,8 +30,10 @@ DEPEND="x11-themes/hicolor-icon-theme"
 RDEPEND="
 	${DEPEND}
 	dev-util/lttng-ust:0/2.12
-	sdl2? ( media-libs/libsdl2 )
-	!sdl2? ( media-libs/libsdl3 )
+	system-sdl? (
+		sdl2? ( media-libs/libsdl2 )
+		!sdl2? ( media-libs/libsdl3 )
+	)
 "
 BDEPEND="media-gfx/imagemagick"
 
@@ -44,12 +46,13 @@ src_unpack() {
 src_prepare() {
 	default
 
-	pushd usr/bin
-		# Use system sdl
-		rm -fv libSDL{2,3}.so
-
+	pushd squashfs-root/usr/bin
 		# Remove pdb files
 		rm -fv *.pdb
+
+		if use system-sdl; then
+			rm -fv libSDL{2,3}.so
+		fi
 	popd
 
 	mkdir -v icons
