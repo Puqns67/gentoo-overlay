@@ -6,6 +6,8 @@
 		<name>Puqns67</name>
 	</maintainer>
 	<use>
+		<flag name="complete-icon">Get more icons from .ico files</flag>
+		<flag name="pipewire">Using pipewire as a sound server requires that pipewire's alsa support be enabled</flag>
 		<flag name="sdl2">Use SDL2 to run the game, otherwise use SDL3</flag>
 		<flag name="system-sdl">Use system SDL</flag>
 	</use>

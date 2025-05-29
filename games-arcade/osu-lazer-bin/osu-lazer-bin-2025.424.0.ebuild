@@ -22,7 +22,7 @@ LICENSE="MIT CC-BY-NC-4.0"
 SLOT="0"
 KEYWORDS="-* ~amd64"
 
-IUSE="sdl2 +system-sdl"
+IUSE="complete-icon pipewire sdl2 +system-sdl"
 
 RESTRICT="mirror"
 
@@ -31,11 +31,14 @@ RDEPEND="
 	${DEPEND}
 	dev-util/lttng-ust:0/2.12
 	system-sdl? (
-		sdl2? ( media-libs/libsdl2 )
+		sdl2? ( <=media-libs/libsdl2-2.32.6 )
 		!sdl2? ( media-libs/libsdl3 )
 	)
+	pipewire? (
+		media-video/pipewire[pipewire-alsa]
+	)
 "
-BDEPEND="media-gfx/imagemagick"
+BDEPEND="complete-icon? ( media-gfx/imagemagick )"
 
 src_unpack() {
 	cp "${DISTDIR}/${_PN}-${PV}.AppImage" "${WORKDIR}/appimage"
@@ -57,11 +60,13 @@ src_prepare() {
 
 	mkdir -v icons
 	pushd icons
-		magick -verbose "${S}/squashfs-root/usr/bin/lazer.ico" osu.png
-		magick -verbose "${S}/squashfs-root/usr/bin/beatmap.ico" beatmap.png
+		if use complete-icon; then
+			magick -verbose "${S}/squashfs-root/usr/bin/lazer.ico" osu.png
+			magick -verbose "${S}/squashfs-root/usr/bin/beatmap.ico" beatmap.png
 
-		eval $(magick identify -format "mv -v %f osu-%G;" osu*.png)
-		eval $(magick identify -format "mv -v %f beatmap-%G;" beatmap*.png)
+			eval $(magick identify -format "mv -v %f osu-%G;" osu*.png)
+			eval $(magick identify -format "mv -v %f beatmap-%G;" beatmap*.png)
+		fi
 
 		for icon in "${S}"/squashfs-root/usr/share/icons/hicolor/*/apps/osu.png; do
 			cp -v "${icon}" "osu-$(echo "${icon}" | sed 's/^.*\/\([0-9]\{2,4\}x[0-9]\{2,4\}\)\/.*$/\1/g')"
@@ -98,7 +103,7 @@ src_install() {
 				newicon --context "apps" --size "${size}" "${icon}" "${_PN}.png"
 				;;
 			"beatmap")
-				newicon --context "mimetypes" --size "${size}" "${icon}" "${_PN}-beatmap.png"
+				newicon --context "mimetypes" --size "${size}" "${icon}" "${_PN%-lazer}-beatmap.png"
 				;;
 			esac
 		done
