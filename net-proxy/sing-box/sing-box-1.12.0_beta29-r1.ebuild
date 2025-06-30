@@ -25,6 +25,11 @@ KEYWORDS="~amd64 ~arm64 ~riscv"
 
 IUSE="+quic grpc +dhcp +wireguard +utls +acme +clash-api v2ray-api +gvisor tor +tailscale"
 
+RDEPEND="
+	acct-group/${PN}
+	acct-user/${PN}
+"
+
 src_compile() {
 	if use quic; then _TAGS+="with_quic,"; fi
 	if use grpc; then _TAGS+="with_grpc,"; fi
@@ -44,9 +49,9 @@ src_compile() {
 
 	mkdir -v completions
 
-	./sing-box completion bash > completions/sing-box
-	./sing-box completion fish > completions/sing-box.fish
-	./sing-box completion zsh > completions/_sing-box
+	./sing-box completion bash >completions/sing-box
+	./sing-box completion fish >completions/sing-box.fish
+	./sing-box completion zsh >completions/_sing-box
 }
 
 src_install() {
