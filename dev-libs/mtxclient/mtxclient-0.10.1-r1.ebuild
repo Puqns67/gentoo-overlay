@@ -21,7 +21,7 @@ RDEPEND="
 	dev-libs/libfmt:=
 	dev-libs/olm
 	dev-libs/openssl:=
-	dev-libs/re2:0/10
+	dev-libs/re2
 	dev-libs/spdlog:=
 "
 DEPEND="
