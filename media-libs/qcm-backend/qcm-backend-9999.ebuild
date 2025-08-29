@@ -25,7 +25,6 @@ REQUIRED_USE="${LUA_REQUIRED_USE}"
 RDEPEND="
 	${LUA_DEPS}
 	dev-db/sqlite:3
-	dev-libs/icu
 	dev-libs/openssl
 "
 DEPEND="${RDEPEND}"
