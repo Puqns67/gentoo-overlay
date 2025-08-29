@@ -1,0 +1,12 @@
+diff --git a/plugin/lua/Cargo.toml b/plugin/lua/Cargo.toml
+index d972843..ca7ff86 100644
+--- a/plugin/lua/Cargo.toml
++++ b/plugin/lua/Cargo.toml
+@@ -17,7 +17,6 @@ async-trait = "0.1"
+ 
+ mlua = { version = "0.10", features = [
+     "lua54",
+-    "vendored",
+     "async",
+     "send",
+     "error-send",
