@@ -3,7 +3,7 @@
 
 EAPI=8
 
-LUA_COMPAT=( lua5-{3..4} luajit )
+LUA_COMPAT=( lua5-{1..4} )
 
 inherit cmake lua-single
 
@@ -36,8 +36,18 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 
-PATCHES=("${FILESDIR}/${PN}-0.7.6_beta1-fix-lua-link-error.patch")
+PATCHES=(
+	"${FILESDIR}/${PN}-0.7.6_beta1-r1-cmake_lua_version.patch"
+	"${FILESDIR}/${PN}-0.7.6_beta1-lua_link_error.patch"
+)
 
 pkg_setup() {
 	lua-single_pkg_setup
+}
+
+src_configure() {
+	local mycmakeargs=(
+		-DLUA_VERSION="$(lua_get_version)"
+	)
+	cmake_src_configure
 }
