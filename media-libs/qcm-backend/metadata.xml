@@ -7,5 +7,9 @@
 	</maintainer>
 	<upstream>
 		<remote-id type="github">hypengw/Qcm</remote-id>
+		<remote-id type="github">hypengw/QcmBackend</remote-id>
 	</upstream>
+	<use>
+		<flag name="ncm">Include ncm plugin</flag>
+	</use>
 </pkgmetadata>

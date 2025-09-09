@@ -14,13 +14,22 @@ inherit git-r3 cargo lua-single
 DESCRIPTION="Material You cloud music player written in C++ (Backend)"
 HOMEPAGE="https://github.com/hypengw/Qcm https://github.com/hypengw/QcmBackend"
 
-LICENSE="MPL-2.0"
+LICENSE="MPL-2.0 MIT"
 # Dependent crate licenses
 LICENSE+=" Apache-2.0 BSD-2 BSD ISC MIT MPL-2.0 Unicode-3.0 ZLIB"
 SLOT="0"
 KEYWORDS="~amd64"
 
-REQUIRED_USE="${LUA_REQUIRED_USE}"
+IUSE="ncm"
+REQUIRED_USE="
+	${LUA_REQUIRED_USE}
+	ncm? (
+		^^ (
+			lua_single_target_lua5-3
+			lua_single_target_lua5-4
+		)
+	)
+"
 
 RDEPEND="
 	${LUA_DEPS}
@@ -46,6 +55,12 @@ pkg_setup() {
 src_unpack() {
 	git-r3_src_unpack
 	cargo_live_src_unpack
+
+	if use ncm; then
+		local EGIT_REPO_URI="https://github.com/hypengw/qcm-ncm-plugin.git"
+		local EGIT_CHECKOUT_DIR="${WORKDIR}/plugins/ncm"
+		git-r3_src_unpack
+	fi
 }
 
 src_prepare() {
@@ -55,4 +70,9 @@ src_prepare() {
 
 src_install() {
 	cargo_src_install --frozen --path "backend"
+
+	insinto "/usr/share/QcmPlugin"
+	doins -r "${WORKDIR}"/plugins/*
+	rm -rfv "${D}"/usr/share/QcmPlugin/*/.git
+	keepdir "/usr/share/QcmPlugin"
 }
