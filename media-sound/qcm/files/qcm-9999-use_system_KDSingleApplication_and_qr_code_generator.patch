@@ -1,0 +1,82 @@
+diff --git a/app/CMakeLists.txt b/app/CMakeLists.txt
+index 1339301..dfd11bd 100644
+--- a/app/CMakeLists.txt
++++ b/app/CMakeLists.txt
+@@ -5,6 +5,8 @@ set(APP_SUMMARY ${PROJECT_DESCRIPTION})
+ set(APP_AUTHOR "hypengw")
+ 
+ find_package(Qt6 REQUIRED COMPONENTS Quick ProtobufQuick ProtobufWellKnownTypes)
++find_package(KDSingleApplication-qt6 REQUIRED)
++find_package(qrcodegencpp REQUIRED)
+ qt_standard_project_setup()
+ 
+ set(SOURCES
+@@ -263,7 +265,7 @@ target_link_libraries(
+          ncrequest::ncrequest
+          rstd::rstd
+          crypto
+-         qr_code
++         qrcodegencpp::qrcodegencpp
+          kstore
+          player
+          platform
+@@ -276,9 +278,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_SCAN_FOR_MODULES ON
+                                                  WIN32_EXECUTABLE FALSE)
+ target_compile_definitions(${PROJECT_NAME} PRIVATE "${APP_INFO_MACROS}")
+ 
+-target_link_libraries(
+-  ${PROJECT_NAME} PRIVATE app kdsingleapplication
+-                          "$<LINK_GROUP:RESCAN,core,qcm.log>")
++target_link_libraries(${PROJECT_NAME} PRIVATE app KDAB::kdsingleapplication "$<LINK_GROUP:RESCAN,core,qcm.log>")
+ 
+ set(APP_DESKTOP assets/Qcm.desktop)
+ set(APP_METAINFO assets/Qcm.metainfo.xml)
+diff --git a/app/src/image_provider/qr.cpp b/app/src/image_provider/qr.cpp
+index 07e7f92..b217285 100644
+--- a/app/src/image_provider/qr.cpp
++++ b/app/src/image_provider/qr.cpp
+@@ -2,7 +2,7 @@
+ 
+ #include <QPointer>
+ 
+-#include "qr_code/qrcodegen.hpp"
++#include "qrcodegen.hpp"
+ 
+ #include "Qcm/app.hpp"
+ 
+diff --git a/third_party/CMakeLists.txt b/third_party/CMakeLists.txt
+index 86dbdf4..f5a9cbb 100644
+--- a/third_party/CMakeLists.txt
++++ b/third_party/CMakeLists.txt
+@@ -104,25 +104,6 @@ else()
+ endif()
+ add_library(random ALIAS effolkronium_random)
+ 
+-# KDSingleApplication
+-set(KDSingleApplication_QT6 ON)
+-set(KDSingleApplication_STATIC ON)
+-set(KDSingleApplication_TESTS OFF)
+-set(KDSingleApplication_EXAMPLES OFF)
+-set(KDSingleApplication_DOCS OFF)
+-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/KDSingleApplication")
+-  add_subdirectory(KDSingleApplication)
+-else()
+-  FetchContent_Declare(
+-    KDSingleApplication
+-    GIT_REPOSITORY https://github.com/KDAB/KDSingleApplication.git
+-    GIT_TAG 631237acd4e20251c7f702db5e5434c83f0e336d
+-    GIT_SHALLOW 0
+-    GIT_PROGRESS 1
+-    SYSTEM EXCLUDE_FROM_ALL FIND_PACKAGE_ARGS QUIET GLOBAL)
+-  FetchContent_MakeAvailable(KDSingleApplication)
+-endif()
+-
+ # cubeb
+ set(BUILD_TESTS OFF)
+ set(BUILD_TOOLS OFF)
+@@ -144,5 +125,3 @@ endif()
+ if(NOT TARGET cubeb::cubeb)
+   add_library(cubeb::cubeb ALIAS cubeb)
+ endif()
+-
+-add_subdirectory(qr_code)
