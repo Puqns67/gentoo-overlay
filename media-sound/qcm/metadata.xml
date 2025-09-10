@@ -8,4 +8,7 @@
 	<upstream>
 		<remote-id type="github">hypengw/Qcm</remote-id>
 	</upstream>
+	<use>
+		<flag name="lto">Enable Link-Time Optimization</flag>
+	</use>
 </pkgmetadata>
