@@ -20,7 +20,7 @@ RESTRICT="!test? ( test )"
 RDEPEND="
 	media-libs/qcm-backend
 	dev-qt/qtbase:6
-	dev-qt/qtquick3d:6
+	dev-qt/qtdeclarative:6
 	dev-qt/qtgrpc:6
 	dev-libs/kdsingleapplication
 	media-video/ffmpeg
