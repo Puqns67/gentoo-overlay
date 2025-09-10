@@ -3,7 +3,7 @@
 
 EAPI=8
 
-LLVM_COMPAT=( {19..20} )
+LLVM_COMPAT=( {19..21} )
 EGIT_LFS="yes"
 
 inherit git-r3 llvm-r2 cmake
@@ -45,6 +45,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-9999-remove_default_clang++.patch"
 	"${FILESDIR}/${PN}-9999-optional_lto.patch"
 	"${FILESDIR}/${PN}-9999-use_system_KDSingleApplication_and_qr_code_generator.patch"
+	"${FILESDIR}/${PN}-9999-fix_rstd_clang21.patch"
 )
 
 src_unpack() {
