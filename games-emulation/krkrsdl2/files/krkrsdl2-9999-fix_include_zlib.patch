@@ -1,0 +1,11 @@
+--- a/src/core/base/sdl2/PluginImpl.cpp
++++ b/src/core/base/sdl2/PluginImpl.cpp
+@@ -935,7 +935,7 @@ void * TVPSearchAvailKMPWaveDecoder(const ttstr & storage, KMPMODULE ** module,
+ //---------------------------------------------------------------------------
+ // some service functions for plugin
+ //---------------------------------------------------------------------------
+-#include "zlib/zlib.h"
++#include "zlib.h"
+ int ZLIB_uncompress(unsigned char *dest, unsigned long *destlen,
+ 	const unsigned char *source, unsigned long sourcelen)
+ {

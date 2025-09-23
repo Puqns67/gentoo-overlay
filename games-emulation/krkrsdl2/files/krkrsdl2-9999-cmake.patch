@@ -1,0 +1,146 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9503505..3e877c0 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -154,6 +154,9 @@ list(APPEND KRKRSDL2COMMON_SRC ${KIRIKIRISDL2_SSE2_SRC})
+ list(APPEND KRKRSDL2COMMON_SRC ${KIRIKIRISDL2_AVX2_SRC})
+ list(APPEND KRKRSDL2COMMON_INCLUDES ${KIRIKIRISDL2_INCLUDES})
+ 
++list(FILTER KRKRSDL2COMMON_SRC EXCLUDE REGEX "^external/(krkrz/external/(freetype|libjpeg-turbo|libogg|lpng|onig|opus)|simde|zlib)")
++list(FILTER KRKRSDL2COMMON_INCLUDES EXCLUDE REGEX "^external/(krkrz/external/(freetype|libjpeg-turbo|libogg|lpng|onig|opus)|simde|zlib)")
++
+ set(KRKRSDL2OPUS_SRC "")
+ list(APPEND KRKRSDL2OPUS_SRC ${KRKRSDL2COMMON_SRC})
+ list(FILTER KRKRSDL2OPUS_SRC INCLUDE REGEX "^external/krkrz/external/opus")
+@@ -469,102 +472,41 @@ list(APPEND KRKRSDL2_LIBS
+ )
+ endif()
+ 
+-if(IOS)
+-set(SDL_SHARED_ENABLED_BY_DEFAULT OFF)
+-set(SDL_SHARED OFF)
+-set(HAVE_GCC_WDECLARATION_AFTER_STATEMENT OFF CACHE BOOL "Intentionally disabled for SDL on iOS: can declaration-after-statement warning be used" FORCE)
+-set(HAVE_GCC_WERROR_DECLARATION_AFTER_STATEMENT OFF CACHE BOOL "Intentionally disabled for SDL on iOS: can declaration-after-statement error warning be used" FORCE)
+-add_subdirectory(external/SDL)
+-find_library(SDL2 NAMES SDL2-static SDL2main)
+-list(APPEND KRKRSDL2_LIBS
+-	SDL2-static
+-	SDL2main
+-)
+-list(APPEND KRKRSDL2_DEFINITIONS
+-	USE_SDL_MAIN
+-)
+-get_target_property(SDL2_INCLUDE_DIRS SDL2-static INCLUDE_DIRECTORIES)
+-set(SDL2_LIBRARIES SDL2-static)
+-elseif((APPLE AND NOT IOS) OR (${CMAKE_SYSTEM_NAME} STREQUAL "Linux"))
+-set(SDL_SHARED_ENABLED_BY_DEFAULT OFF)
+-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/SDL)
+-find_library(SDL2 NAMES SDL2-static)
+-list(APPEND KRKRSDL2_LIBS
+-	SDL2-static
+-)
+-get_target_property(SDL2_INCLUDE_DIRS SDL2-static INCLUDE_DIRECTORIES)
+-set(SDL2_LIBRARIES SDL2-static)
+-elseif(ANDROID)
+-set(SDL_SHARED_ENABLED_BY_DEFAULT ON)
+-set(SDL_STATIC_ENABLED_BY_DEFAULT OFF)
+-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/SDL)
+-find_library(SDL2 NAMES SDL2 SDL2main)
+-list(APPEND KRKRSDL2_LIBS
+-	SDL2
+-	SDL2main
+-)
+-list(APPEND KRKRSDL2_DEFINITIONS
+-	USE_SDL_MAIN
+-)
+-elseif(WIN32)
+-set(SDL_SHARED_ENABLED_BY_DEFAULT OFF)
+-set(SDL_SHARED OFF)
+-set(HAVE_WINDOWS_GAMING_INPUT_H NO)
+-add_subdirectory(external/SDL)
+-find_library(SDL2 NAMES SDL2-static)
+-list(APPEND KRKRSDL2_LIBS
+-	SDL2-static
+-)
+-get_target_property(SDL2_INCLUDE_DIRS SDL2-static INCLUDE_DIRECTORIES)
+-set(SDL2_LIBRARIES SDL2-static)
+-elseif(VITA)
+-set(SDL_SHARED_ENABLED_BY_DEFAULT OFF)
+-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/SDL)
+-find_library(SDL2 NAMES SDL2-static)
++find_package(SDL2 REQUIRED)
++list(APPEND KRKRSDL2_LIBS SDL2::SDL2)
+ 
+-list(APPEND KRKRSDL2_LIBS
+-	stdc++
+-	pthread
+-	stdc++
++find_package(Freetype REQUIRED)
++list(APPEND KRKRSDL2_LIBS Freetype::Freetype)
++
++find_package(libjpeg-turbo REQUIRED)
++list(APPEND KRKRSDL2_LIBS libjpeg-turbo::jpeg libjpeg-turbo::turbojpeg)
++
++find_package(ZLIB REQUIRED)
++list(APPEND KRKRSDL2_LIBS ZLIB::ZLIB)
++
++find_package(PNG REQUIRED)
++list(APPEND KRKRSDL2_LIBS PNG::PNG)
++
++find_package(OpenAL REQUIRED)
++list(APPEND KRKRSDL2_LIBS OpenAL::OpenAL)
+ 
+-	SDL2-static
+-	SceAppUtil_stub
+-	SceShellSvc_stub
+-	m
+-	z
+-)
+-get_target_property(SDL2_INCLUDE_DIRS SDL2-static INCLUDE_DIRECTORIES)
+-set(SDL2_LIBRARIES SDL2-static)
+-elseif(NINTENDO_SWITCH)
+ find_package(PkgConfig REQUIRED)
+-pkg_check_modules(SDL2 REQUIRED IMPORTED_TARGET sdl2)
+ 
+-list(APPEND KRKRSDL2_LIBS
+-	PkgConfig::SDL2
+-)
+-else()
+-find_package(SDL2 REQUIRED)
+-include_directories(${SDL2_INCLUDE_DIRS})
++pkg_check_modules(OGG REQUIRED ogg)
++include_directories(${OGG_INCLUDE_DIRS})
++list(APPEND KRKRSDL2_LIBS ${OGG_LIBRARIES})
+ 
+-list(APPEND KRKRSDL2_LIBS
+-	${SDL2_LIBRARIES}
+-)
+-endif()
++pkg_check_modules(ONIGURUMA REQUIRED oniguruma)
++include_directories(${ONIGURUMA_INCLUDE_DIRS})
++list(APPEND KRKRSDL2_LIBS ${ONIGURUMA_LIBRARIES})
+ 
+-if(NOT (${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten"))
+-set(XNASONG OFF CACHE BOOL "Intentionally disabled for FAudio: enable XNA_Song.c" FORCE)
+-set(BUILD_SHARED_LIBS OFF CACHE BOOL "Intentionally disabled for FAudio: Build shared libraries" FORCE)
+-set(_DISABLE_INSTALLATION_OLD ${_DISABLE_INSTALLATION})
+-set(_DISABLE_INSTALLATION TRUE)
+-add_subdirectory(external/FAudio)
+-set(_DISABLE_INSTALLATION ${_DISABLE_INSTALLATION_OLD})
+-list(APPEND KRKRSDL2_LIBS
+-	FAudio
+-)
+-list(APPEND KRKRSDL2_DEFINITIONS
+-	TVP_FAUDIO_IMPLEMENT
+-)
+-endif()
++pkg_check_modules(OPUS REQUIRED opus)
++include_directories(${OPUS_INCLUDE_DIRS})
++list(APPEND KRKRSDL2_LIBS ${OPUS_LIBRARIES})
++
++pkg_check_modules(OPUSFILE REQUIRED opusfile)
++include_directories(${OPUSFILE_INCLUDE_DIRS})
++list(APPEND KRKRSDL2_LIBS ${OPUSFILE_LIBRARIES})
+ 
+ if(VITA)
+ list(APPEND KRKRSDL2_SRC
