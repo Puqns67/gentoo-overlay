@@ -7,7 +7,7 @@ EAPI=8
 
 EGIT_REPO_URI="https://github.com/hypengw/QcmBackend.git"
 RUST_MIN_VER="1.85.0"
-LUA_COMPAT=( lua5-{1..4} luajit )
+LUA_COMPAT=(lua5-{1..4} luajit)
 
 inherit git-r3 cargo lua-single
 
@@ -66,13 +66,16 @@ src_unpack() {
 src_prepare() {
 	default
 	sed -i "s/lua54/${ELUA/./}/g" "plugin/lua/Cargo.toml"
+	use ncm && rm -r "${WORKDIR}/plugins/ncm/.git" || die
 }
 
 src_install() {
 	cargo_src_install --frozen --path "backend"
 
-	insinto "/usr/share/QcmPlugin"
-	doins -r "${WORKDIR}"/plugins/*
-	rm -rfv "${D}"/usr/share/QcmPlugin/*/.git
-	keepdir "/usr/share/QcmPlugin"
+	if use ncm; then
+		insinto "/usr/share/QcmPlugin"
+		doins -r "${WORKDIR}"/plugins/*
+	else
+		keepdir "/usr/share/QcmPlugin"
+	fi
 }
