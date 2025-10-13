@@ -14,6 +14,7 @@ HOMEPAGE="https://github.com/hypengw/Qcm"
 LICENSE="GPL-2+"
 SLOT="0"
 KEYWORDS="~amd64"
+
 IUSE="lto test"
 RESTRICT="!test? ( test )"
 
@@ -23,11 +24,11 @@ RDEPEND="
 	dev-qt/qtdeclarative:6
 	dev-qt/qtgrpc:6
 	dev-libs/kdsingleapplication
+	dev-libs/openssl
+	dev-libs/qr-code-generator
+	media-libs/cubeb
 	media-video/ffmpeg
 	net-misc/curl
-	dev-libs/openssl
-	media-libs/cubeb
-	dev-libs/qr-code-generator
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
@@ -38,6 +39,7 @@ BDEPEND="
 	dev-cpp/asio
 	dev-libs/pegtl
 	dev-util/vulkan-headers
+	virtual/pkgconfig
 	test? ( dev-cpp/gtest )
 "
 
@@ -45,7 +47,6 @@ PATCHES=(
 	"${FILESDIR}/${PN}-9999-remove_default_clang++.patch"
 	"${FILESDIR}/${PN}-9999-optional_lto.patch"
 	"${FILESDIR}/${PN}-9999-use_system_KDSingleApplication_and_qr_code_generator.patch"
-	"${FILESDIR}/${PN}-9999-fix_rstd_clang21.patch"
 )
 
 src_unpack() {
@@ -53,38 +54,42 @@ src_unpack() {
 	git-r3_src_unpack
 
 	local EGIT_REPO_URI="https://github.com/hypengw/rstd.git"
-	local EGIT_CHECKOUT_DIR="${S}/third_party/rstd"
+	local EGIT_CHECKOUT_DIR="${WORKDIR}/rstd"
 	git-r3_src_unpack
 
 	local EGIT_REPO_URI="https://github.com/hypengw/ncrequest.git"
-	local EGIT_CHECKOUT_DIR="${S}/third_party/ncrequest"
+	local EGIT_CHECKOUT_DIR="${WORKDIR}/ncrequest"
 	git-r3_src_unpack
 
 	local EGIT_REPO_URI="https://github.com/hypengw/kstore.git"
-	local EGIT_CHECKOUT_DIR="${S}/third_party/kstore"
+	local EGIT_CHECKOUT_DIR="${WORKDIR}/kstore"
 	git-r3_src_unpack
 
 	local EGIT_REPO_URI="https://github.com/hypengw/QmlMaterial.git"
-	local EGIT_CHECKOUT_DIR="${S}/third_party/qml_material"
+	local EGIT_CHECKOUT_DIR="${WORKDIR}/qml_material"
 	git-r3_src_unpack
 
 	local EGIT_REPO_URI="https://github.com/ilqvya/random.git"
-	local EGIT_CHECKOUT_DIR="${S}/third_party/random"
+	local EGIT_CHECKOUT_DIR="${WORKDIR}/random"
 	git-r3_src_unpack
 }
 
 src_configure() {
+	AR="llvm-ar"
+	CC="clang-${LLVM_SLOT}"
+	CXX="clang++-${LLVM_SLOT}"
+	NM="llvm-nm"
+	RANLIB="llvm-ranlib"
+
 	local mycmakeargs=(
-		-DQCM_USE_LTO=$(usex lto)
-		-DQCM_BUILD_TESTS=$(usex test)
+		-DFETCHCONTENT_FULLY_DISCONNECTED=ON
+		-DFETCHCONTENT_SOURCE_DIR_RSTD="${WORKDIR}/rstd"
+		-DFETCHCONTENT_SOURCE_DIR_NCREQUEST="${WORKDIR}/ncrequest"
+		-DFETCHCONTENT_SOURCE_DIR_KSTORE="${WORKDIR}/kstore"
+		-DFETCHCONTENT_SOURCE_DIR_QML_MATERIAL="${WORKDIR}/qml_material"
+		-DFETCHCONTENT_SOURCE_DIR_RANDOM="${WORKDIR}/random"
+		-DQCM_USE_LTO="$(usex lto)"
+		-DQCM_BUILD_TESTS="$(usex test)"
 	)
 	cmake_src_configure
-}
-
-src_install() {
-	cmake_src_install
-
-	# fix bad install location
-	mv -v "${D}"/usr/cmake/* "${D}/usr/lib64/cmake"
-	rmdir -v "${D}/usr/cmake"
 }
