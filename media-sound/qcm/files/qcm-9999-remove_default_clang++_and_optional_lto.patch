@@ -1,0 +1,28 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 894183e..0514cec 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -9,8 +9,6 @@ project(
+   HOMEPAGE_URL "https://github.com/hypengw/Qcm"
+   DESCRIPTION "Material You cloud music player")
+ 
+-set(CMAKE_CXX_COMPILER clang++ CACHE STRING "default clang++")
+-
+ set(CMAKE_POLICY_DEFAULT_CMP0065 NEW) # remove unnecessary -rdynamic
+ set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+ set(CMAKE_CXX_STANDARD 23)
+@@ -35,12 +33,13 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+ # options
+ option(QCM_BUILD_TESTS "Build tests" ${PROJECT_IS_TOP_LEVEL})
+ option(QCM_USE_ASAN "use asan" OFF)
++option(QCM_USE_LTO "use lto" ON)
+ option(QCM_QML_DEBUG "qml debug" OFF)
+ 
+ # check lto
+ include(CheckIPOSupported)
+ check_ipo_supported(RESULT is_ipo_supported OUTPUT lto_error)
+-if(is_ipo_supported)
++if(QCM_USE_LTO AND is_ipo_supported)
+   message(STATUS "enable lto")
+   set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+   set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF)

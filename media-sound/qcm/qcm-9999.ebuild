@@ -44,8 +44,7 @@ BDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}/${PN}-9999-remove_default_clang++.patch"
-	"${FILESDIR}/${PN}-9999-optional_lto.patch"
+	"${FILESDIR}/${PN}-9999-remove_default_clang++_and_optional_lto.patch"
 	"${FILESDIR}/${PN}-9999-use_system_KDSingleApplication_and_qr_code_generator.patch"
 )
 
