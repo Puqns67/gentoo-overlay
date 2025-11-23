@@ -81,6 +81,7 @@ src_install() {
 	emake install DESTDIR="${D}" USE_NFTABLES=1 USE_SYSTEMD=1
 	elog "Installing waydroid OpenRC daemon"
 	doinitd "${FILESDIR}"/waydroid
+	python_optimize "${D}/usr/lib/waydroid"
 }
 
 pkg_postinst() {
