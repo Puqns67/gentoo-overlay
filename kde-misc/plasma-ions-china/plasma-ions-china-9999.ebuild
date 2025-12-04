@@ -7,7 +7,6 @@ inherit git-r3 cmake
 
 DESCRIPTION="A collection of plasma weather ions for Chinese users"
 HOMEPAGE="https://github.com/arenekosreal/plasma-ions-china"
-EGIT_REPO_URI="https://github.com/arenekosreal/plasma-ions-china.git"
 
 LICENSE="GPL-3+"
 SLOT="0"
@@ -15,7 +14,14 @@ KEYWORDS="~amd64"
 
 RDEPEND="
 	dev-qt/qtbase:6
-	>=kde-plasma/kdeplasma-addons-6.5
+	>=kde-plasma/kdeplasma-addons-6.5:=
 "
 DEPEND="${RDEPEND}"
 BDEPEND="kde-frameworks/extra-cmake-modules"
+
+EGIT_REPO_URI="https://github.com/arenekosreal/plasma-ions-china.git"
+
+src_configure() {
+	local mycmakeargs=( -DPlasmaWeather_ROOT="${S}" )
+	cmake_src_configure
+}
