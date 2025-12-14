@@ -11,7 +11,7 @@ inherit git-r3 llvm-r2 cmake
 DESCRIPTION="Material You cloud music player written in C++"
 HOMEPAGE="https://github.com/hypengw/Qcm"
 
-LICENSE="GPL-2+"
+LICENSE="GPL-2+ MIT"
 SLOT="0"
 KEYWORDS="~amd64"
 
@@ -19,9 +19,9 @@ IUSE="lto test"
 RESTRICT="!test? ( test )"
 
 RDEPEND="
-	media-libs/qcm-backend
-	dev-qt/qtbase:6
-	dev-qt/qtdeclarative:6
+	dev-libs/qmlmaterial:=
+	media-libs/qcm-backend:=
+	dev-qt/qtbase:6[gui]
 	dev-qt/qtgrpc:6
 	dev-libs/kdsingleapplication
 	dev-libs/openssl
@@ -64,10 +64,6 @@ src_unpack() {
 	local EGIT_CHECKOUT_DIR="${WORKDIR}/kstore"
 	git-r3_src_unpack
 
-	local EGIT_REPO_URI="https://github.com/hypengw/QmlMaterial.git"
-	local EGIT_CHECKOUT_DIR="${WORKDIR}/qml_material"
-	git-r3_src_unpack
-
 	local EGIT_REPO_URI="https://github.com/ilqvya/random.git"
 	local EGIT_CHECKOUT_DIR="${WORKDIR}/random"
 	git-r3_src_unpack
@@ -85,7 +81,6 @@ src_configure() {
 		-DFETCHCONTENT_SOURCE_DIR_RSTD="${WORKDIR}/rstd"
 		-DFETCHCONTENT_SOURCE_DIR_NCREQUEST="${WORKDIR}/ncrequest"
 		-DFETCHCONTENT_SOURCE_DIR_KSTORE="${WORKDIR}/kstore"
-		-DFETCHCONTENT_SOURCE_DIR_QML_MATERIAL="${WORKDIR}/qml_material"
 		-DFETCHCONTENT_SOURCE_DIR_RANDOM="${WORKDIR}/random"
 		-DQCM_USE_LTO="$(usex lto)"
 		-DQCM_BUILD_TESTS="$(usex test)"
