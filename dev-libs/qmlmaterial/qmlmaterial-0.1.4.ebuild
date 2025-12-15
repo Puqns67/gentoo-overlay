@@ -12,6 +12,7 @@ HOMEPAGE="https://github.com/hypengw/QmlMaterial"
 
 LICENSE="MPL-2.0"
 SLOT="0"
+KEYWORDS="~amd64"
 
 RDEPEND="
 	media-libs/freetype[brotli]
@@ -23,3 +24,4 @@ DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 
 EGIT_REPO_URI="https://github.com/hypengw/QmlMaterial.git"
+EGIT_COMMIT="v${PV}"
