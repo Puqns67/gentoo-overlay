@@ -17,8 +17,8 @@ IUSE="lto test"
 RESTRICT="!test? ( test )"
 
 RDEPEND="
+	media-libs/qcmbackend:=
 	dev-libs/qmlmaterial:=
-	media-libs/qcm-backend:=
 	dev-qt/qtbase:6[gui]
 	dev-qt/qtgrpc:6
 	dev-libs/kdsingleapplication

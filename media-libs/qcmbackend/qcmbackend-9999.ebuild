@@ -7,7 +7,7 @@ EAPI=8
 
 EGIT_REPO_URI="https://github.com/hypengw/QcmBackend.git"
 RUST_MIN_VER="1.85.0"
-LUA_COMPAT=(lua5-{1..4} luajit)
+LUA_COMPAT=( lua5-{1..4} luajit )
 
 inherit git-r3 cargo lua-single
 
