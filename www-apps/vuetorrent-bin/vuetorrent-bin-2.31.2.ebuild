@@ -3,7 +3,7 @@
 
 EAPI=8
 
-_COMMIT="83708a2fa5c53055debc5dcf3ede9c05ca9cba15"
+_COMMIT="acfff37ad8c817542ca686788753633b797e5ad8"
 
 DESCRIPTION="The sleekest looking WEBUI for qBittorrent made with Vuejs!"
 HOMEPAGE="https://github.com/VueTorrent/VueTorrent"
