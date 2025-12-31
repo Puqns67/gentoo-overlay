@@ -29,6 +29,8 @@ DEPEND="${RDEPEND}
 	wayland? ( >=dev-util/wayland-scanner-1.22.0 )
 "
 
+QA_SONAME="/usr/lib64/libVkLayer_obs_vkcapture.so"
+
 pkg_postinst() {
 	if [[ $(</sys/module/nvidia_drm/parameters/modeset) != Y ]] 2>/dev/null; then
 		elog "This plugin needs nvidia-drm with modeset configured properly"
