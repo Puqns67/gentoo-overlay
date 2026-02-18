@@ -1,9 +1,9 @@
-# Copyright 2024-2025 Gentoo Authors
+# Copyright 2024-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-_COMMIT="acfff37ad8c817542ca686788753633b797e5ad8"
+_COMMIT="25e8c3c17b76083d6aa327de455b29fc4ca75bb4"
 
 DESCRIPTION="The sleekest looking WEBUI for qBittorrent made with Vuejs!"
 HOMEPAGE="https://github.com/VueTorrent/VueTorrent"
