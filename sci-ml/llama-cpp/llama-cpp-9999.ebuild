@@ -54,27 +54,25 @@ CPU_FLAGS=(
 	"${RISCV_CPU_FLAGS[@]/#/cpu_flags_riscv_}"
 )
 
-# wwma USE explained here: https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md#hip
 IUSE="openblas +openmp blis rocm cuda opencl vulkan flexiblas wmma examples rpc +server ${CPU_FLAGS[*]}"
 
 REQUIRED_USE="
 	?? ( openblas blis flexiblas )
+	rocm? ( ${ROCM_REQUIRED_USE} )
 	wmma? ( rocm )
 	riscv? ( !rocm )
 "
 
-# curl is needed for pulling models from huggingface
-# numpy is used by convert_hf_to_gguf.py
 CDEPEND="
 	dev-libs/openssl
-	openblas? ( sci-libs/openblas:= )
 	openmp? ( llvm-runtimes/openmp:= )
+	openblas? ( sci-libs/openblas:= )
 	blis? ( sci-libs/blis:= )
 	flexiblas? ( sci-libs/flexiblas:= )
 	rocm? (
-		>=dev-util/hip-${ROCM_VERSION}:=
-		>=sci-libs/hipBLAS-${ROCM_VERSION}:=
-		wmma? ( >=sci-libs/rocWMMA-${ROCM_VERSION}:= )
+		>=dev-util/hip-${ROCM_VERSION}
+		>=sci-libs/rocBLAS-${ROCM_VERSION}[${ROCM_USEDEP}]
+		wmma? ( >=sci-libs/rocWMMA-${ROCM_VERSION} )
 	)
 	cuda? ( dev-util/nvidia-cuda-toolkit:= )
 "
@@ -83,11 +81,12 @@ DEPEND="${CDEPEND}
 	vulkan? ( dev-util/vulkan-headers )
 "
 RDEPEND="${CDEPEND}
-	dev-python/numpy
 	opencl? ( dev-libs/opencl-icd-loader )
 	vulkan? ( media-libs/vulkan-loader )
 "
-BDEPEND="media-libs/shaderc"
+BDEPEND="
+	vulkan? ( media-libs/shaderc )
+"
 
 pkg_setup() {
 	if use rocm; then
@@ -200,4 +199,11 @@ src_configure() {
 	fi
 
 	cmake_src_configure
+}
+
+src_install() {
+	cmake_src_install
+
+	# remove convert_hf_to_gguf.py due to unsatisfied dependencies
+	rm -v "${D}/usr/bin/convert_hf_to_gguf.py"
 }
