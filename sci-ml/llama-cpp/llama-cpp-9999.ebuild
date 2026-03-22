@@ -60,7 +60,6 @@ REQUIRED_USE="
 	?? ( openblas blis flexiblas )
 	rocm? ( ${ROCM_REQUIRED_USE} )
 	wmma? ( rocm )
-	riscv? ( !rocm )
 "
 
 CDEPEND="
@@ -71,7 +70,7 @@ CDEPEND="
 	flexiblas? ( sci-libs/flexiblas:= )
 	rocm? (
 		>=dev-util/hip-${ROCM_VERSION}
-		>=sci-libs/rocBLAS-${ROCM_VERSION}[${ROCM_USEDEP}]
+		>=sci-libs/hipBLAS-${ROCM_VERSION}
 		wmma? ( >=sci-libs/rocWMMA-${ROCM_VERSION} )
 	)
 	cuda? ( dev-util/nvidia-cuda-toolkit:= )
@@ -192,9 +191,9 @@ src_configure() {
 	if use rocm; then
 		rocm_use_hipcc
 		mycmakeargs+=(
-			-DAMDGPU_TARGETS=$(get_amdgpu_flags)
+			-DAMDGPU_TARGETS="$(get_amdgpu_flags)"
 			-DGGML_HIP=ON
-			-DGGML_HIP_ROCWMMA_FATTN=$(usex wmma)
+			-DGGML_HIP_ROCWMMA_FATTN="$(usex wmma)"
 		)
 	fi
 
