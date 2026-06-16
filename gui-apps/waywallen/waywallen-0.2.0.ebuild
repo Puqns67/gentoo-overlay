@@ -9,7 +9,7 @@ declare -A GIT_CRATES=(
 	[mlua-extra]="https://github.com/hypengw/mlua-extra;16fc20f1445e6b723da78fb08b236dfeaad10db0"
 )
 
-inherit llvm-r2 cargo cmake toolchain-funcs flag-o-matic
+inherit toolchain-funcs flag-o-matic llvm-r2 cargo cmake xdg-utils
 
 DESCRIPTION="A dynamic wallpaper solution for Linux desktops"
 HOMEPAGE="https://github.com/waywallen/waywallen"
@@ -96,4 +96,14 @@ src_configure() {
 	)
 
 	cmake_src_configure
+}
+
+pkg_postinst() {
+	xdg_desktop_database_update
+	xdg_icon_cache_update
+}
+
+pkg_postrm() {
+	xdg_desktop_database_update
+	xdg_icon_cache_update
 }
