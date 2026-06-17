@@ -9,6 +9,6 @@
 		<remote-id type="github">waywallen/waywallen</remote-id>
 	</upstream>
 	<use>
-		<flag name="layer">Display with zwlr_layer_shell_v1 protocols</flag>
+		<flag name="layer">Display with protocol zwlr_layer_shell_v1</flag>
 	</use>
 </pkgmetadata>

@@ -34,9 +34,7 @@ RDEPEND="
 		media-libs/libglvnd
 		media-libs/mesa
 	)
-	vulkan? (
-		media-libs/vulkan-loader
-	)
+	vulkan? ( media-libs/vulkan-loader )
 	gnome? ( gui-libs/gtk )
 	plasma? (
 		dev-qt/qtbase:6[dbus,gui]
@@ -45,8 +43,8 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
-	dev-util/vulkan-headers
 	virtual/pkgconfig
+	vulkan? ( dev-util/vulkan-headers )
 	layer? ( ${RUST_DEPEND} )
 "
 
