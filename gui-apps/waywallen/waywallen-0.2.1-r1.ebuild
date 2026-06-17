@@ -35,7 +35,8 @@ LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
 
-IUSE="+ui gnome plasma pipewire"
+IUSE="+ui +layer gnome plasma pipewire"
+REQUIRED_USE="|| ( layer gnome plasma )"
 
 RDEPEND="
 	dev-db/sqlite
@@ -45,14 +46,15 @@ RDEPEND="
 	media-libs/vulkan-loader
 	media-video/ffmpeg
 	dev-libs/glib
+	media-plugins/waywallen-display[layer?,gnome?,plasma?]
 	ui? (
 		dev-libs/qmlmaterial:=
 		dev-qt/qtbase:6[dbus]
 		dev-qt/qtdeclarative:6
 		dev-qt/qtgrpc:6
 	)
-	gnome? ( media-plugins/waywallen-display[gnome] )
-	plasma? ( media-plugins/waywallen-display[plasma] )
+	pipewire? ( media-video/pipewire )
+	!pipewire? ( media-libs/libpulse )
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
@@ -60,6 +62,7 @@ BDEPEND="
 		llvm-core/clang:${LLVM_SLOT}=
 		llvm-core/lld:${LLVM_SLOT}=
 	')
+	dev-build/corrosion
 	dev-cpp/asio
 	dev-libs/pegtl
 	dev-util/vulkan-headers

@@ -10,6 +10,7 @@
 	</upstream>
 	<use>
 		<flag name="ui">Build Qt/QML UI</flag>
+		<flag name="layer">Display with protocol zwlr_layer_shell_v1</flag>
 		<flag name="pipewire">Build plugins with pipewire (not pulse)</flag>
 	</use>
 </pkgmetadata>
