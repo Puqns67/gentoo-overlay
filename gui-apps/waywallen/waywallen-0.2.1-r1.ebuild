@@ -4,6 +4,7 @@
 EAPI=8
 
 LLVM_COMPAT=( 22 )
+RUST_MIN_VER="1.87.0"
 
 declare -A GIT_CRATES=(
 	[mlua-extra]="https://github.com/hypengw/mlua-extra;16fc20f1445e6b723da78fb08b236dfeaad10db0"
@@ -35,10 +36,10 @@ LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
 
-IUSE="+ui +layer gnome plasma pipewire"
-REQUIRED_USE="|| ( layer gnome plasma )"
+IUSE="+ui pipewire"
 
 RDEPEND="
+	media-plugins/waywallen-display
 	dev-db/sqlite
 	dev-libs/icu
 	virtual/zlib
@@ -46,7 +47,6 @@ RDEPEND="
 	media-libs/vulkan-loader
 	media-video/ffmpeg
 	dev-libs/glib
-	media-plugins/waywallen-display[layer?,gnome?,plasma?]
 	ui? (
 		dev-libs/qmlmaterial:=
 		dev-qt/qtbase:6[dbus]
@@ -82,7 +82,7 @@ src_configure() {
 
 	replace-flags -O* -O0
 
-	if ! tc-ld-is-lld && ! tc-ld-is-mold; then
+	if ! (tc-ld-is-lld || tc-ld-is-mold); then
 		append-ldflags -fuse-ld=lld
 	fi
 
