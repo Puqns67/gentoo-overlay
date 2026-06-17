@@ -24,4 +24,4 @@ DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 
 EGIT_REPO_URI="https://github.com/hypengw/QmlMaterial.git"
-EGIT_COMMIT="c36528593c70d67c8bac8fc7dea579702a7e8aff"
+EGIT_COMMIT="00bcc4a155b10701057b832447b9522d8aa133c3"
