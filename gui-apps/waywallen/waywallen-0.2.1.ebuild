@@ -4,8 +4,8 @@
 EAPI=8
 
 LLVM_COMPAT=( 22 )
+
 declare -A GIT_CRATES=(
-	[waywallen-display]="https://github.com/waywallen/waywallen-display;e9982a0fda97948765aa0fea96e3eab38221adbd"
 	[mlua-extra]="https://github.com/hypengw/mlua-extra;16fc20f1445e6b723da78fb08b236dfeaad10db0"
 )
 
@@ -21,8 +21,8 @@ QEXTRA_COMMIT="26e4b4134a05d35676f02f8b0e82a6130d877695"
 
 SRC_URI="
 	https://github.com/waywallen/waywallen/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
-	${CARGO_CRATE_URIS}
 	https://github.com/gentoo-zh-drafts/waywallen/releases/download/v${PV}/waywallen-${PV}-crates.tar.xz
+	${CARGO_CRATE_URIS}
 	https://github.com/hypengw/rstd/archive/${RSTD_COMMIT}.tar.gz -> rstd-${RSTD_COMMIT}.tar.gz
 	https://github.com/hypengw/wavsen/archive/${WAVSEN_COMMIT}.tar.gz -> wavsen-${WAVSEN_COMMIT}.tar.gz
 	ui? (
@@ -35,7 +35,7 @@ LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
 
-IUSE="+ui pipewire"
+IUSE="+ui gnome plasma pipewire"
 
 RDEPEND="
 	dev-db/sqlite
@@ -51,6 +51,8 @@ RDEPEND="
 		dev-qt/qtdeclarative:6
 		dev-qt/qtgrpc:6
 	)
+	gnome? ( media-plugins/waywallen-display[gnome] )
+	plasma? ( media-plugins/waywallen-display[plasma] )
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
@@ -65,7 +67,7 @@ BDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}/${PN}-0.2.0-use-system-depends.patch"
+	"${FILESDIR}/${PN}-0.2.1-use-system-depends.patch"
 )
 
 export LIBSQLITE3_SYS_USE_PKG_CONFIG=1
@@ -87,7 +89,7 @@ src_configure() {
 		-DFETCHCONTENT_SOURCE_DIR_RSTD="${WORKDIR}/rstd-${RSTD_COMMIT}"
 		-DFETCHCONTENT_SOURCE_DIR_WAVSEN="${WORKDIR}/wavsen-${WAVSEN_COMMIT}"
 		-DWAYWALLEN_BUILD_UI="$(usex ui)"
-		-DWAVSEN_AUDIO_BACKEND=$(usex pipewire pipewire pulse)
+		-DWAVSEN_AUDIO_BACKEND="$(usex pipewire pipewire pulse)"
 	)
 
 	use ui && mycmakeargs+=(
