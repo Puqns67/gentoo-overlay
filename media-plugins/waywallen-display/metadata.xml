@@ -8,4 +8,7 @@
 	<upstream>
 		<remote-id type="github">waywallen/waywallen</remote-id>
 	</upstream>
+	<use>
+		<flag name="layer">Display with zwlr_layer_shell_v1 protocols</flag>
+	</use>
 </pkgmetadata>
