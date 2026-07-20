@@ -3,13 +3,13 @@
 
 EAPI=8
 
-_COMMIT="1ef6b93bc2321dae7b7f93de8327498626fa13bd"
+COMMIT="3f05cd085d5ea17573ed0b233a01304af024e25d"
 
 DESCRIPTION="The sleekest looking WEBUI for qBittorrent made with Vuejs!"
 HOMEPAGE="https://github.com/VueTorrent/VueTorrent"
-SRC_URI="https://github.com/VueTorrent/VueTorrent/archive/${_COMMIT}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/VueTorrent/VueTorrent/archive/${COMMIT}.tar.gz -> ${P}.tar.gz"
 
-S="${WORKDIR}/VueTorrent-${_COMMIT}"
+S="${WORKDIR}/VueTorrent-${COMMIT}"
 
 LICENSE="GPL-3+"
 SLOT="0"
