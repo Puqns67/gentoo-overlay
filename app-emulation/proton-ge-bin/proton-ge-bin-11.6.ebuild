@@ -16,7 +16,7 @@ SRC_URI="
 S="${WORKDIR}"
 
 LICENSE="BSD LGPL-2.1+ LGPL-2 ZLIB OFL-1.1 MIT GPL-2"
-SLOT="${PV%%.*}"
+SLOT="$(ver_cut 1)"
 KEYWORDS="-* ~amd64"
 
 RESTRICT="mirror strip"
