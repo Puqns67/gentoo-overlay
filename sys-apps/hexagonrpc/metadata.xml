@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>me@puqns67.icu</email>
+		<name>Puqns67</name>
+	</maintainer>
+	<longdescription>
+		Reimplementation of the Qualcomm FastRPC userspace part. libhexagonrpc
+		provides a wrapper around the FastRPC ioctl interface that builds the
+		ioctl arguments from a remote method definition instead of requiring
+		QAIC-generated code. hexagonrpcd opens the FastRPC device nodes and runs
+		a reverse tunnel that serves requests coming from the DSP, including the
+		apps_std and apps_mem interfaces and the HexagonFS file tree usually
+		provided by the device's Android firmware. chrecd is the reverse tunnel
+		client for the Context Hub Runtime Environment.
+	</longdescription>
+	<use>
+		<flag name="debug">Build hexagonrpcd with extra logging for every remote method invocation</flag>
+	</use>
+	<upstream>
+		<remote-id type="github">linux-msm/hexagonrpc</remote-id>
+	</upstream>
+</pkgmetadata>

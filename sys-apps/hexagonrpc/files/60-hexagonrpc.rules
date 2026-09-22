@@ -1,0 +1,5 @@
+# hexagonrpcd talks to the DSP through the misc character devices registered by
+# the kernel FastRPC driver (drivers/misc/fastrpc.c), which creates them as
+# /dev/fastrpc-<domain> with root-only permissions. The daemon runs as the
+# fastrpc user, so hand those nodes over to it.
+ACTION=="add", SUBSYSTEM=="misc", KERNEL=="fastrpc-*", OWNER="fastrpc", GROUP="fastrpc", MODE="0660"
