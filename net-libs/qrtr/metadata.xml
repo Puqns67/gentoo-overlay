@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>me@puqns67.icu</email>
+		<name>Puqns67</name>
+	</maintainer>
+	<longdescription>
+		The QRTR (QIPCRTR) address family is the IPC router used on Qualcomm
+		platforms to talk between the application processor and the remote
+		processors, such as the modem, the DSPs and the sensor hub. This is the
+		reference userspace implementation: libqrtr wraps the socket interface
+		and the QMI message framing, qrtr-lookup lists the services currently
+		registered and qrtr-cfg configures the local node and port. The name
+		service mapping service names to node and port pairs is provided by the
+		kernel itself since Linux 5.7 (net/qrtr/ns.c, built with CONFIG_QRTR),
+		so the older userspace qrtr-ns daemon is not built here.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">linux-msm/qrtr</remote-id>
+	</upstream>
+</pkgmetadata>
