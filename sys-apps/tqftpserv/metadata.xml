@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>me@puqns67.icu</email>
+		<name>Puqns67</name>
+	</maintainer>
+	<longdescription>
+		tqftpserv is a TFTP server speaking the AF_QIPCRTR protocol, used to
+		serve files between the application processor and the other processors
+		on Qualcomm SoCs. Requests below /readonly/firmware/image/ are
+		translated to the firmware directory of the matching remoteproc and
+		served read-only, transparently decompressing .zst compressed images,
+		while requests below /readwrite/ are served from /var/lib/tqftpserv.
+		It is mainly needed by the modem firmware, which reads its images
+		through it during boot.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">linux-msm/tqftpserv</remote-id>
+	</upstream>
+</pkgmetadata>
