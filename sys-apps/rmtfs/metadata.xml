@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>me@puqns67.icu</email>
+		<name>Puqns67</name>
+	</maintainer>
+	<longdescription>
+		rmtfs serves the EFS (modem file system) of Qualcomm platforms to the
+		modem processor over QRTR. The modem asks for its partitions and NV
+		items through QMI, and rmtfs answers by reading and writing either the
+		raw partitions exported by the kernel (devices named qcom_rmtfs_mem*,
+		selected with -P) or a directory of images (selected with -o). It is
+		normally started together with the modem remoteproc, and on mainline
+		kernels the -s option ties the modem's lifecycle to the daemon.
+		rmtfs.service runs with raw partitions and rmtfs-dir.service with the
+		/var/lib/rmtfs image directory; both are started on demand by the udev
+		rule that watches for the qcom_rmtfs_mem device.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">linux-msm/rmtfs</remote-id>
+	</upstream>
+</pkgmetadata>
