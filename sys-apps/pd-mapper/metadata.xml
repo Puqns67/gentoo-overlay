@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>me@puqns67.icu</email>
+		<name>Puqns67</name>
+	</maintainer>
+	<longdescription>
+		The Protection Domain mapper answers the service registry lookups of the
+		remote processors on Qualcomm platforms. Firmware running on the ADSP,
+		CDSP and modem asks over QRTR which protection domain provides a given
+		service, and pd-mapper replies with the domain and instance read from
+		the servreg JSON files shipped in the firmware package, decompressing
+		them on the fly when they are stored as .xz.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">andersson/pd-mapper</remote-id>
+	</upstream>
+</pkgmetadata>
