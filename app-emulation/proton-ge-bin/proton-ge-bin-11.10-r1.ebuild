@@ -41,6 +41,9 @@ src_install() {
 		dosym -r /usr/share/steam/compatibilitytools.d/proton-ge-"${SLOT}"/files/lib/wine/{x86_64,i386}-unix/wine64-preloader
 	fi
 
+	# disable startup dialog for protonfixes
+	eapply "${FILESDIR}/${PN}-11.10-disable-protonfixes-dialog.patch"
+
 	# strip the write bits to pass the world-writable QA check.
 	find . -type f -perm -002 -exec chmod -v g-w,o-w {} + || die
 
