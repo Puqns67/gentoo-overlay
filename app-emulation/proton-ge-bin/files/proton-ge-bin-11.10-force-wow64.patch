@@ -1,0 +1,12 @@
+--- a/proton
++++ b/proton
+@@ -1865,6 +1865,9 @@
+                 "winebth.sys": "d", #disable winebth.sys as it crashes winedevice.exe
+         }
+ 
++        # No multilib, force enable wow64.
++        self.env["PROTON_USE_WOW64"] = "1"
++
+         # CW Bug 21737. Locoland executable happens to be steam.exe.
+         if os.environ.get("SteamGameId", 0) == "352130":
+             del self.dlloverrides["steam.exe"]

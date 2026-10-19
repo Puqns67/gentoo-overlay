@@ -35,11 +35,14 @@ src_install() {
 	cd "${D}/usr/share/steam/compatibilitytools.d/proton-ge-${SLOT}" || die
 
 	if ! use multilib; then
-		rm -rv files/lib/i386-linux-gnu
+		eapply "${FILESDIR}/${PN}-11.10-force-wow64.patch"
+		rm -rv files/lib/wine/i386-unix files/lib/i386-linux-gnu
+		dosym -r /usr/share/steam/compatibilitytools.d/proton-ge-"${SLOT}"/files/lib/wine/{x86_64,i386}-unix/wine64
+		dosym -r /usr/share/steam/compatibilitytools.d/proton-ge-"${SLOT}"/files/lib/wine/{x86_64,i386}-unix/wine64-preloader
 	fi
 
 	# strip the write bits to pass the world-writable QA check.
-	find . -type f -perm -002 -exec chmod g-w,o-w {} + || die
+	find . -type f -perm -002 -exec chmod -v g-w,o-w {} + || die
 
 	# update internal name and display name.
 	sed -i \
