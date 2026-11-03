@@ -54,7 +54,7 @@ src_install() {
 		compatibilitytool.vdf || die
 
 	# update version name
-	sed -i "/CURRENT_PREFIX_VERSION/s/${MY_P}/${PV}-1/" proton || die
+	sed -i --regexp-extended "/CURRENT_PREFIX_VERSION/s/11.0-100/${PV}-${PR#r}/" proton || die
 	sed -i "s/${MY_P}/proton-ge-${PV/./-}/" version || die
 
 	dosym -r "/usr/share/steam/compatibilitytools.d/proton-ge-${SLOT}" "/opt/proton-ge/${SLOT}"
