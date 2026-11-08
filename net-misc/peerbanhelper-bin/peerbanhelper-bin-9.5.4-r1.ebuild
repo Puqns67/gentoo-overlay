@@ -36,7 +36,7 @@ src_install() {
 	newins "${FILESDIR}/peerbanhelper.default" peerbanhelper
 
 	# remove uneeded file
-	rm -rf usr/share
+	rm -r usr/share || die
 }
 
 pkg_preinst() {
