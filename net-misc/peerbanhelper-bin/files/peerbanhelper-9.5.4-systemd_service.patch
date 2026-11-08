@@ -1,0 +1,19 @@
+--- a/usr/lib/systemd/system/peerbanhelper.service
++++ b/usr/lib/systemd/system/peerbanhelper.service
+@@ -4,8 +4,14 @@
+ 
+ [Service]
+ User=peerbanhelper
+-WorkingDirectory=/usr/lib/peerbanhelper
+-ExecStart=/usr/bin/java -XX:SoftMaxHeapSize=386M --enable-native-access=ALL-UNNAMED -XX:+UseCompactObjectHeaders -Dpbh.release=debian -Dpbh.datadir=/var/lib/peerbanhelper -Dpbh.configdir=/etc/peerbanhelper -Dpbh.logsdir=/var/log/peerbanhelper -Dpbh.log.level=WARN -Djdk.attach.allowAttachSelf=true -XX:MaxRAMPercentage=85.0 -XX:+UseG1GC -XX:G1PeriodicGCInterval=60000 -XX:MaxHeapFreeRatio=15 -XX:MinHeapFreeRatio=5 -Xss512k -XX:+UseStringDeduplication -XX:-ShrinkHeapInSteps -jar PeerBanHelper.jar
++Group=peerbanhelper
++StateDirectory=peerbanhelper
++LogsDirectory=peerbanhelper
++ConfigurationDirectory=peerbanhelper
++ConfigurationDirectoryMode=775
++EnvironmentFile=-/etc/default/peerbanhelper
++WorkingDirectory=/var/lib/peerbanhelper
++ExecStart=/usr/bin/java -XX:SoftMaxHeapSize=386M --enable-native-access=ALL-UNNAMED -XX:+UseCompactObjectHeaders -Dpbh.release=debian -Dpbh.datadir=/var/lib/peerbanhelper -Dpbh.configdir=/etc/peerbanhelper -Dpbh.logsdir=/var/log/peerbanhelper -Dpbh.log.level=WARN -Djdk.attach.allowAttachSelf=true -XX:MaxRAMPercentage=85.0 -XX:+UseG1GC -XX:G1PeriodicGCInterval=60000 -XX:MaxHeapFreeRatio=15 -XX:MinHeapFreeRatio=5 -Xss512k -XX:+UseStringDeduplication -XX:-ShrinkHeapInSteps -jar /usr/lib/peerbanhelper/PeerBanHelper.jar
+ SuccessExitStatus=143
+ AmbientCapabilities=CAP_NET_ADMIN
+ Restart=on-failure
