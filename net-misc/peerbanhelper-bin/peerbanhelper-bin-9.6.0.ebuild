@@ -31,7 +31,7 @@ src_install() {
 	cd "${D}" || die
 	unpacker "${DISTDIR}/peerbanhelper_${PV}_all.deb"
 
-	eapply "${FILESDIR}/peerbanhelper-9.5.4-systemd_service.patch"
+	eapply "${FILESDIR}/peerbanhelper-9.6.0-systemd_service.patch"
 	insinto /etc/default
 	newins "${FILESDIR}/peerbanhelper.default" peerbanhelper
 
