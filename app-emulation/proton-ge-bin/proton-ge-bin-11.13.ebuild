@@ -19,14 +19,7 @@ LICENSE="BSD LGPL-2.1+ LGPL-2 ZLIB OFL-1.1 MIT GPL-2"
 SLOT="$(ver_cut 1)"
 KEYWORDS="-* ~amd64"
 
-IUSE="+multilib +system-ffmpeg"
-
-RDEPEND="
-	system-ffmpeg? ( || (
-		media-video/ffmpeg:0/60.62.62
-		media-video/ffmpeg-compat:8
-	) )
-"
+IUSE="+multilib"
 
 QA_PREBUILT="*"
 
@@ -46,21 +39,6 @@ src_install() {
 		rm -rv files/lib/wine/i386-unix files/lib/i386-linux-gnu
 		dosym -r /usr/share/steam/compatibilitytools.d/proton-ge-"${SLOT}"/files/lib/wine/{x86_64,i386}-unix/wine64
 		dosym -r /usr/share/steam/compatibilitytools.d/proton-ge-"${SLOT}"/files/lib/wine/{x86_64,i386}-unix/wine64-preloader
-	fi
-
-	if use system-ffmpeg; then
-		pushd files/lib/x86_64-linux-gnu || die
-		rm -v \
-			libavutil.so.60.26.100 \
-			libavcodec.so.62.28.100 \
-			libavformat.so.62.12.100 \
-			libavdevice.so.62.3.100 \
-			libavfilter.so.11.14.100 \
-			libswresample.so.6.3.100 \
-			libswscale.so.9.5.100 \
-			libdav1d.so.7.0.0
-		find . -xtype l -delete
-		popd || die
 	fi
 
 	# disable startup dialog for protonfixes
